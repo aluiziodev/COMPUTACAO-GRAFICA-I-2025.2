@@ -1,7 +1,10 @@
 #include <bits/stdc++.h>
-#include "../OBJETOS/Esfera.h"
-#include "../OBJETOS/Janela.h"
-#include "../OBJETOS/EstruturasGeo.h"
+
+#include "../CLASSES/OBJETOS/Esfera.h"
+#include "../CLASSES/Janela.h"
+#include "../CLASSES/Vetores.h"
+#include "../CLASSES/Objeto.h"
+
 
 using namespace std;
 
@@ -36,10 +39,9 @@ int main(){
             double x = -wJanela/2 + Dx/2 + c*Dx;
             double y = hJanela/2 - Dy/2 - l*Dy;
             Ponto P = Ponto(x, y , -dJanela);
-            Vect D = P-Olho; double t;
            
 
-            if(esfera.IntersectaEsfera(Olho, D, t)){
+            if(esfera.intersecta(Olho, P)){
                 canvas.janela[l*nCol +c] = {255, 0, 0};
             }
             

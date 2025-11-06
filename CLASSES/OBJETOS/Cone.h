@@ -15,7 +15,7 @@ struct Cone : Objeto{
     double hCone;
     Ponto Cbase;
     Vt dCone;
-
+    bool temBase;
     Cone(double raio, double alt, Ponto centro, Vect d){
         r = raio;
         Cbase = centro;
@@ -25,21 +25,35 @@ struct Cone : Objeto{
         kesp = {0, 0, 0};
         kamb = {0, 0, 0};
         m = 0;
+        usaText = false;
+        temBase = true;
+    }
+
+    Vt normal(Ponto &pI){
+        Vt aux = pI - Cbase;
+        double proj = aux.ProdEsc(dCone);
+        Vt vx = Vt(aux.x - proj*dCone.x, aux.y - proj*dCone.y, aux.z - proj*dCone.z);
+        double k = r / hCone;
+        Vt n = Vt((vx.x - k*proj*dCone.x),(vx.y - k*proj*dCone.y), (vx.z - k*proj*dCone.z));
+        n.normaliza();
+        return n;
     }
 
     bool intersecta(Ponto &O, Ponto &P) {
         Vt D = P-O; D.normaliza();
-        Plano p = Plano(Cbase, dCone);
-        if(p.intersecta(O, P)){
-            Ponto pI= Ponto(O.x +p.t*D.x,O.y + p.t*D.y, O.z + p.t*D.z);
-            Vt v = pI - Cbase;
-            double dist = v.ProdEsc(v);
-            if(dist<= r*r){
-                t = p.t;
-                return true;
+        if(temBase){
+            Plano p = Plano(Cbase, dCone);
+            if(p.intersecta(O, P)){
+                Ponto pI = O.pontoInterseçao(p.t, D);
+                Vt v = pI - Cbase;
+                double dist = v.ProdEsc(v);
+                if(dist<= r*r){
+                    t = p.t;
+                    return true;
+                }
             }
         }
-        Ponto cTopo = Pt(Cbase.x + hCone*dCone.x,Cbase.y + hCone*dCone.y,Cbase.z + hCone*dCone.z);
+        Ponto cTopo = Cbase.pontoInterseçao(hCone, dCone);
         Vt co = O - cTopo;
         double k = r/hCone;
         double dv = D.ProdEsc(dCone);
@@ -65,7 +79,7 @@ struct Cone : Objeto{
 
 
 
-        Ponto pI = Pt(O.x + D.x*t, O.y + D.y*t,O.z + D.z*t);
+        Ponto pI = O.pontoInterseçao(t,D);
         double h = (pI - Cbase).ProdEsc(dCone);
 
         if (h < 0 || h > hCone) return false;
@@ -73,44 +87,13 @@ struct Cone : Objeto{
         
         return true;
     }
-    RGB pinta(Ponto &O, Ponto &P,Ponto &pF, RGB &iF, RGB &iA){
-        Vt D = P -O; D.normaliza();
-        Ponto pI= Ponto(O.x + t*D.x, O.y + t*D.y, O.z + t*D.z);
-                
-        Vt aux = pI - Cbase;
-        double proj = aux.ProdEsc(dCone);
-        Vt vx = Vt(aux.x - proj*dCone.x, aux.y - proj*dCone.y, aux.z - proj*dCone.z);
-        double k = r / hCone;
-        Vt n = Vt((vx.x - k*proj*dCone.x),(vx.y - k*proj*dCone.y), (vx.z - k*proj*dCone.z));
-        
-        n.normaliza();
-        Vect l = pF- pI; l.normaliza();
-        Vect v = Vt(-D.x, -D.y, -D.z); v.normaliza();
-        double nL = n.ProdEsc(l);
-        Vect r = Vect(2*nL*n.x - l.x, 2*nL*n.y - l.y, 2*nL*n.z - l.z);
-        r.normaliza();
 
-        RGB I_d = kdif.arroba(iF);
-        double d = max(nL, 0.0);
-        I_d.r = (I_d.r*d);
-        I_d.g = (I_d.g*d);
-        I_d.b = (I_d.b*d);
+    
 
-        RGB I_e = kesp.arroba(iF);
-        double vR = max(v.ProdEsc(r), 0.0);
-        double e = pow(vR, m);
-        I_e.r = (I_e.r * e);
-        I_e.g = (I_e.g * e);
-        I_e.b = (I_e.b * e);
-
-        RGB I_a = kamb.arroba(iA);
-
-        double R = (I_d.r+I_e.r+I_a.r);
-        double G = (I_d.g+I_e.g+I_a.g);
-        double B = (I_d.b+I_e.b+I_a.b);
-
-        return RGB(double(min(1.0, R)), double( min(1.0, G)), double(min(1.0, B)));
+    RGB pintaTextura(Ponto &O, Ponto &P, Ponto &pf,RGB &iF,RGB &iA){
+        return pinta(O, P, pf, iF, iA);
     }
+
 
 
 };

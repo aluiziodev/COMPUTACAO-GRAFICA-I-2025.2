@@ -20,6 +20,13 @@ struct Esfera : public Objeto{
         kesp = {0, 0, 0};
         kamb = {0, 0, 0};
         m = 0;
+        usaText = false;
+    }
+
+    Vt normal(Ponto &pI){
+        Vect n = pI - Cesf; 
+        n.normaliza();
+        return n;
     }
 
     bool intersecta(Ponto &O, Ponto &P){
@@ -47,39 +54,10 @@ struct Esfera : public Objeto{
         
         return true;
     }
-    RGB pinta(Ponto &O, Ponto &P,Ponto &pF, RGB &iF, RGB &iA){
-        Vt D = P - O; D.normaliza();
-        Ponto pI= Ponto(O.x + t*D.x,O.y + t*D.y, O.z + t*D.z);
+    
 
-        Vect n = pI - Cesf; 
-        n.normaliza();
-
-        Vect l = pF - pI; l.normaliza();
-        Vect v = Vt(-D.x, -D.y, -D.z); v.normaliza();
-        double nL = n.ProdEsc(l);
-        Vect r = Vect(2*nL*n.x - l.x, 2*nL*n.y - l.y, 2*nL*n.z - l.z);
-        r.normaliza();
-
-        RGB I_d = kdif.arroba(iF);
-        double d = max(nL, 0.0);
-        I_d.r = (I_d.r*d);
-        I_d.g = (I_d.g*d);
-        I_d.b = (I_d.b*d);
-
-        RGB I_e = kesp.arroba(iF);
-        double vR = max(v.ProdEsc(r), 0.0);
-        double e = pow(vR, m);
-        I_e.r = (I_e.r * e);
-        I_e.g = (I_e.g * e);
-        I_e.b = (I_e.b * e);
-
-        RGB I_a = kamb.arroba(iA);
-
-        double R = (I_d.r+I_e.r+I_a.r);
-        double G = (I_d.g+I_e.g+I_a.g);
-        double B = (I_d.b+I_e.b+I_a.b);
-
-        return RGB(double(min(1.0, R)), double( min(1.0, G)), double(min(1.0, B)));
+    RGB pintaTextura(Ponto &O, Ponto &P, Ponto &pf,RGB &iF,RGB &iA){
+     return pinta(O, P, pf, iF, iA);
     }
 
 

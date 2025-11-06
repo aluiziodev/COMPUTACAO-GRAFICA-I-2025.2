@@ -12,6 +12,9 @@ using namespace std;
 struct Plano : Objeto{
     Ponto P0;
     Vect N;
+    Vt ud;
+    Vt vd;
+    
 
     Plano(Ponto P0, Vect N){
         this->P0 = P0;
@@ -20,6 +23,11 @@ struct Plano : Objeto{
         this->kesp=  RGB(0.0, 0.0, 0.0);
         this->kamb = RGB(0.0, 0.0, 0.0);
         m = 0;
+        usaText = false;
+    }
+
+    Vt normal(Ponto &pI){
+        return N;
     }
     
     bool intersecta(Ponto &O, Ponto &P){
@@ -40,43 +48,38 @@ struct Plano : Objeto{
         
     }
 
-    RGB pinta(Ponto &O, Ponto &P,Ponto &pF, RGB &iF, RGB &iA){
-        Vt D = P -O; D.normaliza();
-        Vt n;
-        if(D.ProdEsc(N)>0) n = Vt(-N.x, -N.y, -N.z);
-        else n = N;
-        n.normaliza();
-        Ponto pI = Ponto(P0.x + t*D.x, P0.y + t*D.y, P0.z + t*D.z);
-        Vect l = pF- pI; l.normaliza();
-        Vect v = Vt(-D.x, -D.y, -D.z); v.normaliza();
-        double nL = n.ProdEsc(l);
-        Vect r = Vect(2*nL*n.x - l.x, 
-                    2*nL*n.y - l.y,
-                    2*nL*n.z - l.z);
-        r.normaliza();
+    
 
-        RGB I_d = kdif.arroba(iF);
-        double d = max(nL, 0.0);
-        I_d.r = (I_d.r*d);
-        I_d.g = (I_d.g*d);
-        I_d.b = (I_d.b*d);
+    RGB pintaTextura(Ponto &O, Ponto &P, Ponto &pf,RGB &iF,RGB &iA){
+        Vt D = P - O; D.normaliza();
+        Ponto pI = O.pontoInterseçao(t, D);
+        Vt l = pI - P0;
+        ud.normaliza();
+        vd.normaliza();
 
-        RGB I_e = kesp.arroba(iF);
-        double vR = max(v.ProdEsc(r), 0.0);
-        double e = pow(vR, m);
-        I_e.r = (I_e.r * e);
-        I_e.g = (I_e.g * e);
-        I_e.b = (I_e.b * e);
+        double u = l.ProdEsc(ud)/ ud.norma();
+        double v = l.ProdEsc(vd)/ vd.norma();
+        u = u - floor(u);
+        v = v - floor(v);
 
-        RGB I_a = kamb.arroba(iA);
+        int tx = (int)(u * (textW - 1));
+        int ty = (int)((1 - v) * (textH - 1));
 
-        double R = (I_d.r+I_e.r+I_a.r);
-        double G = (I_d.g+I_e.g+I_a.g);
-        double B = (I_d.b+I_e.b+I_a.b);
+        int idx = (ty * textW + tx) *  textC;
+        double r = text[idx + 0] / 255.0;
+        double g = text[idx + 1] / 255.0;
+        double b = text[idx + 2] / 255.0;
+        kdif = RGB(r, g, b);
+        kesp = RGB(r, g, b);
+        kamb = RGB(r, g, b);
 
-        return RGB(double(min(1.0, R)), double( min(1.0, G)), double(min(1.0, B)));
 
+        return pinta(O, P, pf, iF, iA);
     }
+
+                     
+
+    
 
 
 

@@ -14,7 +14,7 @@ typedef struct Vect{
         this->z = z;
     }
 
-    Vect operator-(Vect &v){
+    Vect operator-(const Vect &v){
         return Vect(x-v.x, y-v.y, z-v.z);
     }
 
@@ -23,13 +23,17 @@ typedef struct Vect{
 
     }
 
-    Vect operator+(double &v){
+    Vect operator+(const double &v){
         return Vect(x+v, y+v, z+v);
 
     }
 
-    double ProdEsc(Vect &v){
+    double ProdEsc(const Vect &v){
         return (x*v.x)+(y*v.y)+(z*v.z);
+    }
+
+    Vect prodVet(const Vect &v){
+        return Vect(y*v.z - z*v.y, z*v.x - x*v.z, x*v.y - y*v.x);
     }
 
     void normaliza(){
@@ -38,6 +42,12 @@ typedef struct Vect{
         y = y/norma;
         z = z/norma;
     }
+
+    double norma(){
+        return sqrt((x*x) + (y*y) + (z*z));
+    }
+
+
 
 } Vt;
 
@@ -56,13 +66,15 @@ typedef struct Ponto{
         this->z = z;
     }
 
-    Vect operator-(Ponto &v){
+    Vect operator-(const Ponto &v){
         return Vect(x-v.x, y-v.y, z-v.z);
     }
 
-    Vect operator+(Ponto &v){
-        return Vect(x+v.x, y+v.y, z+v.z);
+    Ponto pontoInterseçao(const double &t, Vect &dr){
+        return Ponto(x + t*dr.x, y + t*dr.y,z + t*dr.z);
     }
+
+
 
 } Pt;
 

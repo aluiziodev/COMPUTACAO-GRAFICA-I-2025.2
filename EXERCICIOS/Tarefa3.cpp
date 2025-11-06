@@ -69,7 +69,7 @@ int main(){
                     if(obj->t>0 && (tmin<0 || obj->t<tmin)){
                         tmin = obj->t;
                         Vt D = P - Olho; D.normaliza();
-                        Ponto pI = Pt(Olho.x + D.x*obj->t,Olho.y + D.y*obj->t,Olho.z + D.z*obj->t);
+                        Ponto pI = Olho.pontoInterseçao(obj->t, D);
                         if(shadowRay(pI, P_F, obj, cena)){
                             cor = obj->kamb.arroba(I_A);
                         }

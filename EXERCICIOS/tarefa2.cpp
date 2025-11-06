@@ -50,8 +50,8 @@ int main(){
 
             if(esfera.intersecta(Olho, P)){ // ESFERA
                 cor = esfera.pinta(Olho, P, P_F, I_F, I_A);
+                canvas.janela[g*nCol+c] = cor;
             }
-             canvas.janela[g*nCol+c] = cor;
         }
         
     }

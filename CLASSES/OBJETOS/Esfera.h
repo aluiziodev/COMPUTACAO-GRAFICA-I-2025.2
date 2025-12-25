@@ -9,7 +9,7 @@
 
 using namespace std;
 
-struct Esfera : public Objeto{
+struct Esfera : Objeto{
     double r;
     Ponto Cesf;
 
@@ -59,6 +59,19 @@ struct Esfera : public Objeto{
     RGB pintaTextura(Ponto &O, Ponto &P, Ponto &pf,RGB &iF,RGB &iA){
      return pinta(O, P, pf, iF, iA);
     }
+
+    void aplicaTransformacao(Matriz &T) override{
+        Cesf = T * Cesf;
+        
+        double s = sqrt(
+            T(0,0)*T(0,0) +
+            T(0,1)*T(0,1) +
+            T(0,2)*T(0,2)
+        );
+
+        r *= s;
+    }
+
 
 
 

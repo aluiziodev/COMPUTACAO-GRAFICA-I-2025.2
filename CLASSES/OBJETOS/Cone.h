@@ -44,7 +44,7 @@ struct Cone : Objeto{
         if(temBase){
             Plano p = Plano(Cbase, dCone);
             if(p.intersecta(O, P)){
-                Ponto pI = O.pontoInterseçao(p.t, D);
+                Ponto pI = O.pontoIntersecao(p.t, D);
                 Vt v = pI - Cbase;
                 double dist = v.ProdEsc(v);
                 if(dist<= r*r){
@@ -53,7 +53,7 @@ struct Cone : Objeto{
                 }
             }
         }
-        Ponto cTopo = Cbase.pontoInterseçao(hCone, dCone);
+        Ponto cTopo = Cbase.pontoIntersecao(hCone, dCone);
         Vt co = O - cTopo;
         double k = r/hCone;
         double dv = D.ProdEsc(dCone);
@@ -79,7 +79,7 @@ struct Cone : Objeto{
 
 
 
-        Ponto pI = O.pontoInterseçao(t,D);
+        Ponto pI = O.pontoIntersecao(t,D);
         double h = (pI - Cbase).ProdEsc(dCone);
 
         if (h < 0 || h > hCone) return false;
@@ -88,13 +88,22 @@ struct Cone : Objeto{
         return true;
     }
 
-    
-
     RGB pintaTextura(Ponto &O, Ponto &P, Ponto &pf,RGB &iF,RGB &iA){
         return pinta(O, P, pf, iF, iA);
     }
 
+    void aplicaTransformacao(Matriz &T) override{
+        Cbase = T * Cbase;
 
+        Matriz R = T;
+        R(0,3) = R(1,3) = R(2,3) = 0;
+
+        dCone = R * dCone;
+        dCone.normaliza();
+
+        r *= sqrt(pow(R(0,0),2) + pow(R(0,1),2) + pow(R(0,2),2));
+        hCone *= sqrt(pow(R(1,0),2) + pow(R(1,1),2) + pow(R(1,2),2));
+    }
 
 };
 

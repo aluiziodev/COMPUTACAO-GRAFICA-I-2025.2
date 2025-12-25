@@ -22,7 +22,7 @@ struct Malha : Objeto{
         usaText = false;
     }
 
-    Vt normal(Ponto &pI){
+    Vt normal(Ponto &/*pI*/){
         return N;
     }
 
@@ -43,6 +43,15 @@ struct Malha : Objeto{
 
     RGB pintaTextura(Ponto &O, Ponto &P, Ponto &pf,RGB &iF,RGB &iA){
         return pinta(O, P, pf, iF, iA);
+    }
+    
+    void aplicaTransformacao(Matriz &T) override{
+        for(auto &v : vertices){
+            v = T * v;
+        }
+        for(auto &tri : faces){
+            tri.aplicaTransformacao(T);
+        }
     }
     
 };

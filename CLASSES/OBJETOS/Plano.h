@@ -26,7 +26,7 @@ struct Plano : Objeto{
         usaText = false;
     }
 
-    Vt normal(Ponto &pI){
+    Vt normal(Ponto &/*pI*/){
         return N;
     }
     
@@ -48,11 +48,9 @@ struct Plano : Objeto{
         
     }
 
-    
-
     RGB pintaTextura(Ponto &O, Ponto &P, Ponto &pf,RGB &iF,RGB &iA){
         Vt D = P - O; D.normaliza();
-        Ponto pI = O.pontoInterseçao(t, D);
+        Ponto pI = O.pontoIntersecao(t, D);
         Vt l = pI - P0;
         ud.normaliza();
         vd.normaliza();
@@ -76,10 +74,18 @@ struct Plano : Objeto{
 
         return pinta(O, P, pf, iF, iA);
     }
-
-                     
-
     
+    void aplicaTransformacao(Matriz &T) override{
+        P0 = T * P0;
+        
+        Matriz R = T;
+        R(0, 3) = 0;
+        R(1, 3) = 0;
+        R(2, 3) = 0;
+
+        N = R * N;
+        N.normaliza();
+    }
 
 
 

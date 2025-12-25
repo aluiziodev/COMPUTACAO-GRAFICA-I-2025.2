@@ -28,10 +28,6 @@ int main(){
     }
 
 
-
-
-
-
     // PROPRIEDADES CANVAS
     double wJanela = 0.6;
     double hJanela = 0.6;
@@ -155,7 +151,6 @@ int main(){
     malha.m = 1;
 
     
-
     vector<Objeto *> cena = {&esfera, &cilindro, &pChao, &pParFront, &pLatDir, &pLatEsq, &pTeto, &cone, &malha};
 
     for(int g = 0; g<nLin; g++){
@@ -171,7 +166,7 @@ int main(){
                     if(obj->t>0 && (tmin<0 || obj->t<tmin)){
                         tmin = obj->t;
                         Vt D = P - Olho; D.normaliza();
-                        Ponto pI= Olho.pontoInterseçao(obj->t, D);
+                        Ponto pI= Olho.pontoIntersecao(obj->t, D);
                         cone.temBase = true;
                         if(shadowRay(pI, P_F, obj, cena)){
                             cor = obj->kamb.arroba(I_A);

@@ -4,6 +4,7 @@
 #include <bits/stdc++.h>
 #include "Janela.h"
 #include "Vetores.h"
+#include "Matriz.h"
 
 struct Objeto{
     RGB kdif, kesp, kamb;
@@ -12,8 +13,11 @@ struct Objeto{
     bool usaText;
     unsigned char* text;
     int textW, textH, textC;
+   
 
+    virtual ~Objeto() {}
 
+    virtual void aplicaTransformacao(Matriz &T) = 0;
     virtual bool intersecta(Ponto &O, Ponto &D) = 0;
     virtual RGB pintaTextura(Ponto &O, Ponto &P, Ponto &pf,RGB &I_F,RGB &I_A) = 0;
     virtual Vect normal(Ponto &pI) = 0;
@@ -69,10 +73,10 @@ bool shadowRay(Ponto &pI, Ponto &pF, Objeto *atual, vector<Objeto *> &cena){
     l.normaliza();
     double eps = 1e-5;
 
-    Ponto pL = pI.pontoInterseçao(dist, l);
+    Ponto pL = pI.pontoIntersecao(dist, l);
     Vt n = atual->normal(pI);
     if(n.ProdEsc(l)>0.0) n = Vt(-n.x, -n.y, -n.z); 
-    Ponto Desloc = pI.pontoInterseçao(eps, n);
+    Ponto Desloc = pI.pontoIntersecao(eps, n);
     for(Objeto *obj : cena){
         if(obj != atual){
             if(obj->intersecta(Desloc, pL)){

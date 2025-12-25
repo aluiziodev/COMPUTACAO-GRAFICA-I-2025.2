@@ -59,7 +59,7 @@ struct Cilindro : Objeto{
         else if(t1<=1e-6 && t2>1e-6) t = t2;
         else t = min(t1, t2);
 
-        Ponto pI= O.pontoInterseçao(t, D);
+        Ponto pI= O.pontoIntersecao(t, D);
         double h = (pI - Cbase).ProdEsc(dCil);
         if(h<0 || h>hCil) return false;
 
@@ -68,10 +68,13 @@ struct Cilindro : Objeto{
 
     }
 
-   
-
     RGB pintaTextura(Ponto &O, Ponto &P, Ponto &pf,RGB &iF,RGB &iA){
         return pinta(O, P, pf, iF, iA);
+    }
+
+    void aplicaTransformacao(Matriz &T) override{
+        Cbase = T * Cbase;
+        dCil = T * dCil;
     }
 
 

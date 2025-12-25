@@ -22,7 +22,7 @@ struct Triangulo : Objeto{
         usaText = false;
     }
 
-    Vt normal(Ponto &pI){
+    Vt normal(Ponto &/*pI*/){
         Vt E1 = P1 - P0;
         Vt E2 = P2 - P0;
         Vt n = E1.prodVet(E2);
@@ -52,7 +52,11 @@ struct Triangulo : Objeto{
     return pinta(O, P, pf, iF, iA);
    }
 
-
+   void aplicaTransformacao(Matriz &T) override{
+        P0 = T * P0;
+        P1 = T * P1;
+        P2 = T * P2;
+    }
 
 };
 

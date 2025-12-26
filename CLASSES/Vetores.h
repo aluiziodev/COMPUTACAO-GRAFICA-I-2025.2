@@ -23,7 +23,9 @@ typedef struct Vect{
     }
     Vect operator+(const double &v)const {
         return Vect(x+v, y+v, z+v);
-
+    }
+    Vect operator+(const Vect &v) const {
+        return Vect(x+v.x, y+v.y, z+v.z);
     }
 
     double ProdEsc(const Vect &v) const{

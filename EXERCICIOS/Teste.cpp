@@ -12,6 +12,10 @@
 #include "../CLASSES/Transformacoes.h"
 #include "../CLASSES/Camera.h"
 #include "../CLASSES/Matriz.h"
+#include "../CLASSES/Luz.h"
+#include "../CLASSES/LuzPontual.h"
+#include "../CLASSES/LuzSpot.h"
+#include "../CLASSES/LuzDirecional.h"
 
 #define STB_IMAGE_IMPLEMENTATION
 #include "../LIBS/stb_image.h"
@@ -30,6 +34,12 @@ int main(){
         return -1;
     }
 
+    int texW2, texH2, Canais2;
+    unsigned char* textura_folha = stbi_load("../../TEXTURAS/folhas.jpg", &texW2, &texH2, &Canais2, 0);
+    if (!textura_folha) {
+        cerr << "Erro ao carregar textura!\n";
+        return -1;
+    }
 
     // PROPRIEDADES CANVAS
     double wJanela = 0.6;
@@ -100,6 +110,7 @@ int main(){
 
     Cone cone(0.9, 1.5, Pt (0.0, -0.6, -2.0), Vt(0.0, 1.0, 0.0));
     cone.temBase = false;
+    cone.colocaText(textura_folha, texW2, texH2, Canais2);
     cone.kdif = RGB(0.0, 1.0, 0.498);
     cone.kesp = RGB(0.0, 1.0, 0.498);
     cone.kamb = RGB(0.0, 1.0, 0.498);
@@ -113,11 +124,8 @@ int main(){
     esfera.kamb = RGB(0.854, 0.647, 0.125);
     esfera.m = 1;
 
-    //LUZ
-
-    Ponto P_F(-1.0,1.4, -0.2);
-    RGB I_F(0.7,0.7,0.7);
-    RGB I_A(0.3, 0.3, 0.3);
+    
+   
 
     //CUBO
 
@@ -155,13 +163,25 @@ int main(){
     malha.kamb = RGB(1., 0.078, 0.576);
     malha.m = 1;
 
+    //LUZ
+
+    Ponto P_F(0, 0.0, 0);
+    RGB I_F(0.8,0.8,0.8);
+    RGB I_A(0.1, 0.1, 0.2);
+
+    LuzSpot LuzP(I_F, I_A, Vt(0.0, 0.0, -1.0), 20.0, P_F);
+    LuzP.apontarPara(esfera.Cesf);
+
+    LuzPontual LuzP2(I_F, I_A, P_F);
+    
+    // LuzDirecional LuzP(I_F, I_A, Vt(0.0, -1.0, -1.0));
+
     vector<Objeto *> cena = {&esfera, &cilindro, &pChao, &pParFront, &pLatDir, &pLatEsq, &pTeto, &cone, &malha};
 
     for(int g = 0; g<nLin; g++){
         for(int c = 0; c<nCol; c++){
             double x = -wJanela/2 + Dx/2 + c*Dx;
             double y = hJanela/2 - Dy/2 - g*Dy;
-            //Ponto P = Ponto(x, y , -dJanela);
 
             Ponto P = Cam.posicao +
                       Cam.U * x +
@@ -184,16 +204,17 @@ int main(){
                             cor = obj->kamb.arroba(I_A);
                         }
                         else if(obj->usaText){
-                            cor = obj->pintaTextura(Cam.posicao, P, P_F, I_F, I_A);
+                            cor = obj->pintaTextura(LuzP, Cam.posicao, P);
                         }
                         else{
-                            cor = obj->pinta(Cam.posicao, P, P_F, I_F, I_A);
+                            cor = obj->pinta(LuzP, Cam.posicao, P);
                         }
                         cone.temBase = false;
                     }
                 }
             }
 
+            
             canvas.janela[g*nCol+c] = cor;
                  
         }
@@ -203,6 +224,8 @@ int main(){
     canvas.GeraImg("tarefa5.ppm");
 
     cout << "concluido \n";
+
+    stbi_image_free(textura);
 
     return 0;
 

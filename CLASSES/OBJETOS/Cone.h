@@ -7,6 +7,7 @@
 #include "../../CLASSES/Objeto.h"
 #include "Plano.h"
 
+
 using namespace std;
 
 
@@ -88,9 +89,56 @@ struct Cone : Objeto{
         return true;
     }
 
-    RGB pintaTextura(Ponto &O, Ponto &P, Ponto &pf,RGB &iF,RGB &iA){
-        return pinta(O, P, pf, iF, iA);
+   RGB pintaTextura(Luz &l, Ponto &O, Ponto &P){
+
+        // 1) ponto de interseção
+        Vt D = P - O;
+        D.normaliza();
+        Ponto pI = O.pontoIntersecao(t, D);
+
+        // 2) vetor da base até o ponto
+        Vt w = pI - Cbase;
+
+        // 3) projeção no eixo (altura)
+        double y = w.ProdEsc(dCone);
+        double v = y / hCone;
+
+        if (v < 0 || v > 1) 
+            return pinta(l, O, P); // fora da lateral
+
+        // 4) componente radial
+        Vt radial = w - dCone * y;
+        radial.normaliza();
+
+        // 5) base ortonormal
+        Vt aux = (fabs(dCone.x) < 0.9) ? Vt(1,0,0) : Vt(0,1,0);
+        Vt U = dCone.prodVet(aux);
+        U.normaliza();
+
+        Vt W = dCone.prodVet(U);
+
+        // 6) coordenada u (ângulo)
+        double u = atan2(radial.ProdEsc(W), radial.ProdEsc(U));
+        u = u / (2 * M_PI);
+        if (u < 0) u += 1;
+
+        // 7) amostragem da textura
+        int tx = (int)(u * (textW - 1));
+        int ty = (int)((1 - v) * (textH - 1));
+
+        int idx = (ty * textW + tx) * textC;
+
+        double r = text[idx + 0] / 255.0;
+        double g = text[idx + 1] / 255.0;
+        double b = text[idx + 2] / 255.0;
+
+        kdif = RGB(r, g, b);
+        kesp = RGB(r, g, b);
+        kamb = RGB(r, g, b);
+
+        return pinta(l, O, P);
     }
+
 
     void aplicaTransformacao(Matriz &T) override{
         Cbase = T * Cbase;

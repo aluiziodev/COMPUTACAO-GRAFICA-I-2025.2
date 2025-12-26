@@ -56,8 +56,8 @@ struct Esfera : Objeto{
     }
     
 
-    RGB pintaTextura(Ponto &O, Ponto &P, Ponto &pf,RGB &iF,RGB &iA){
-     return pinta(O, P, pf, iF, iA);
+    RGB pintaTextura(Luz &l, Ponto &O, Ponto &P){
+     return pinta(l, O, P);
     }
 
     void aplicaTransformacao(Matriz &T) override{

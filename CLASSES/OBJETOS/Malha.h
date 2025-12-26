@@ -7,6 +7,7 @@
 #include "../../CLASSES/Objeto.h"
 #include "Triangulo.h"
 
+
 struct Malha : Objeto{
     vector<Ponto> vertices;
     vector<Triangulo> faces;
@@ -41,8 +42,8 @@ struct Malha : Objeto{
         }
     }
 
-    RGB pintaTextura(Ponto &O, Ponto &P, Ponto &pf,RGB &iF,RGB &iA){
-        return pinta(O, P, pf, iF, iA);
+    RGB pintaTextura(Luz &L, Ponto &O, Ponto &P){
+        return pinta(L, O, P);
     }
     
     void aplicaTransformacao(Matriz &T) override{

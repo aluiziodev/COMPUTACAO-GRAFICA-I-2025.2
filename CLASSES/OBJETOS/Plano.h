@@ -48,7 +48,7 @@ struct Plano : Objeto{
         
     }
 
-    RGB pintaTextura(Ponto &O, Ponto &P, Ponto &pf,RGB &iF,RGB &iA){
+    RGB pintaTextura(Luz &L, Ponto &O, Ponto &P){
         Vt D = P - O; D.normaliza();
         Ponto pI = O.pontoIntersecao(t, D);
         Vt l = pI - P0;
@@ -72,7 +72,7 @@ struct Plano : Objeto{
         kamb = RGB(r, g, b);
 
 
-        return pinta(O, P, pf, iF, iA);
+        return pinta(L, O, P);
     }
     
     void aplicaTransformacao(Matriz &T) override{

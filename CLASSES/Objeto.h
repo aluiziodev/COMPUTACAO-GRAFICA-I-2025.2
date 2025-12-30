@@ -20,7 +20,7 @@ struct Objeto{
 
     virtual void aplicaTransformacao(Matriz &T) = 0;
     virtual bool intersecta(Ponto &O, Ponto &D) = 0;
-    virtual RGB pintaTextura(Luz &l, Ponto &O, Ponto &P) = 0;
+    virtual RGB pintaTextura(const Luz &l, Ponto &O, Ponto &P) = 0;
     virtual Vect normal(Ponto &pI) = 0;
 
     void colocaText(unsigned char* text, int &w, int &h, int &c){
@@ -31,7 +31,7 @@ struct Objeto{
         textC = c;
     }
 
-    RGB pinta(Luz &luz, Ponto &O, Ponto &P){
+    RGB pinta(const Luz &luz, Ponto &O, Ponto &P){
         Vt D = P -O; D.normaliza();
         Ponto pI= Ponto(O.x + t*D.x, O.y + t*D.y, O.z + t*D.z);
         Vt N = normal(pI);

@@ -48,7 +48,7 @@ struct Triangulo : Objeto{
     }
 
 
-   RGB pintaTextura(Luz &l, Ponto &O, Ponto &P){
+   RGB pintaTextura(const Luz &l, Ponto &O, Ponto &P){
     return pinta(l, O, P);
    }
 

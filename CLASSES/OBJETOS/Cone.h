@@ -89,7 +89,7 @@ struct Cone : Objeto{
         return true;
     }
 
-   RGB pintaTextura(Luz &l, Ponto &O, Ponto &P){
+   RGB pintaTextura(const Luz &l, Ponto &O, Ponto &P){
 
         // 1) ponto de interseção
         Vt D = P - O;

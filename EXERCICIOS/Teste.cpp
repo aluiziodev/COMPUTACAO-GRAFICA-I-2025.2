@@ -170,13 +170,14 @@ int main(){
     RGB I_A(0.1, 0.1, 0.2);
 
     LuzSpot LuzP(I_F, I_A, Vt(0.0, 0.0, -1.0), 20.0, P_F);
-    LuzP.apontarPara(esfera.Cesf);
+    LuzP.apontarPara(f1.P0);
 
     LuzPontual LuzP2(I_F, I_A, P_F);
     
     // LuzDirecional LuzP(I_F, I_A, Vt(0.0, -1.0, -1.0));
 
     vector<Objeto *> cena = {&esfera, &cilindro, &pChao, &pParFront, &pLatDir, &pLatEsq, &pTeto, &cone, &malha};
+    vector<Luz*> luzes = {&LuzP};
 
     for(int g = 0; g<nLin; g++){
         for(int c = 0; c<nCol; c++){
@@ -200,14 +201,17 @@ int main(){
 
                         Ponto pI= Cam.posicao.pontoIntersecao(obj->t, D);
                         cone.temBase = true;
-                        if(shadowRay(pI, P_F, obj, cena)){
-                            cor = obj->kamb.arroba(I_A);
-                        }
-                        else if(obj->usaText){
-                            cor = obj->pintaTextura(LuzP, Cam.posicao, P);
-                        }
-                        else{
-                            cor = obj->pinta(LuzP, Cam.posicao, P);
+
+                        for(const Luz* L : luzes){
+                            if(shadowRay(pI, P_F, obj, cena)){
+                                cor = obj->kamb.arroba(I_A);
+                            }
+                            else if(obj->usaText){
+                                cor = obj->pintaTextura(*L, Cam.posicao, P);
+                            }
+                            else{
+                                cor = obj->pinta(*L, Cam.posicao, P);
+                            }
                         }
                         cone.temBase = false;
                     }

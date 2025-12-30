@@ -48,7 +48,7 @@ struct Plano : Objeto{
         
     }
 
-    RGB pintaTextura(Luz &L, Ponto &O, Ponto &P){
+    RGB pintaTextura(const Luz &L, Ponto &O, Ponto &P){
         Vt D = P - O; D.normaliza();
         Ponto pI = O.pontoIntersecao(t, D);
         Vt l = pI - P0;

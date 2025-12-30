@@ -68,7 +68,7 @@ struct Cilindro : Objeto{
 
     }
 
-    RGB pintaTextura(Luz &L, Ponto &O, Ponto &P){
+    RGB pintaTextura(const Luz &L, Ponto &O, Ponto &P){
         return pinta(L, O, P);
     }
 

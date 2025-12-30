@@ -166,18 +166,22 @@ int main(){
     //LUZ
 
     Ponto P_F(0, 0.0, 0);
-    RGB I_F(0.8,0.8,0.8);
-    RGB I_A(0.1, 0.1, 0.2);
+    RGB I_F(0.7,0.7,0.7);
+    RGB I_A(0.05, 0.05, 0.05);
+
+    RGB I_F2(0.05, 0.05, 0.05);
 
     LuzSpot LuzP(I_F, I_A, Vt(0.0, 0.0, -1.0), 20.0, P_F);
-    LuzP.apontarPara(f1.P0);
+ 
 
-    LuzPontual LuzP2(I_F, I_A, P_F);
+    LuzPontual LuzP2(I_F2, I_A, P_F);
     
+    Cam.posicao = Ponto(0.0, 0.0, 0.0);
+
     // LuzDirecional LuzP(I_F, I_A, Vt(0.0, -1.0, -1.0));
 
     vector<Objeto *> cena = {&esfera, &cilindro, &pChao, &pParFront, &pLatDir, &pLatEsq, &pTeto, &cone, &malha};
-    vector<Luz*> luzes = {&LuzP};
+    vector<Luz*> luzes = {&LuzP, &LuzP2};
 
     for(int g = 0; g<nLin; g++){
         for(int c = 0; c<nCol; c++){
@@ -191,7 +195,8 @@ int main(){
 
             double tmin = -1.0;
 
-            RGB cor;
+            RGB corFinal(0,0,0);
+
             for(Objeto *obj : cena){
                 if(obj->intersecta(Cam.posicao, P)){
                     if(obj->t>0 && (tmin<0 || obj->t<tmin)){
@@ -201,25 +206,29 @@ int main(){
 
                         Ponto pI= Cam.posicao.pontoIntersecao(obj->t, D);
                         cone.temBase = true;
+                        RGB cor(0,0,0);
 
+                        cor = obj->kamb.arroba(I_A);
                         for(const Luz* L : luzes){
                             if(shadowRay(pI, P_F, obj, cena)){
-                                cor = obj->kamb.arroba(I_A);
+                                continue;
                             }
                             else if(obj->usaText){
-                                cor = obj->pintaTextura(*L, Cam.posicao, P);
+                                cor += obj->pintaTextura(*L, Cam.posicao, P);
                             }
                             else{
-                                cor = obj->pinta(*L, Cam.posicao, P);
+                                cor += obj->pinta(*L, Cam.posicao, P);
                             }
                         }
                         cone.temBase = false;
+                        corFinal = cor;
+                        corFinal.clamp();
                     }
                 }
             }
 
             
-            canvas.janela[g*nCol+c] = cor;
+            canvas.janela[g*nCol+c] = corFinal;
                  
         }
         

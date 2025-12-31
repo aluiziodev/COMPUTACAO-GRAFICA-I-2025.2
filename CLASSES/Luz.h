@@ -9,10 +9,13 @@ typedef struct Luz{
     const RGB intensidade;
     const RGB ambiente;
 
-    Luz(const RGB &I, const RGB &A) : intensidade(I), ambiente(A) {}
+    Luz(const RGB &I) : intensidade(I) {}
 
-    virtual RGB ilumina(const Ponto P, Vt &N, Ponto pI, const Ponto &O, RGB kdif, RGB kesp, RGB ka, int m) const = 0;
+    virtual RGB ilumina(const Ponto P, Vt &N, Ponto pI, const Ponto &O, RGB kdif, RGB kesp, int m) const = 0;
 
+    virtual double distanciaParaLuz(const Ponto &P) const = 0;
+    virtual Vt direcaoLuz(const Ponto &P) const = 0;
+    
     virtual ~Luz() {}
 } Luz;
 

@@ -6,11 +6,23 @@
 struct LuzDirecional : Luz {
     Vt dir;
 
-    LuzDirecional(RGB I, RGB A, Vt d) :  Luz(I, A), dir(d) {
+    LuzDirecional(RGB I, Vt d) :  Luz(I), dir(d) {
         dir.normaliza();
     }
 
-    RGB ilumina(const Ponto P, Vt &N, Ponto pI, const Ponto &O, RGB kdif, RGB kesp, RGB ka, int m) const override
+    double distanciaParaLuz(const Ponto &P) const override
+    {
+        (void) P; // P nao eh usado em luz direcional
+        return 1e9; //"Infinito"
+    }
+
+    Vt direcaoLuz(const Ponto &P) const override
+    {
+        (void) P; // P nao eh usado em luz direcional
+        return -dir;
+    }
+
+    RGB ilumina(const Ponto P, Vt &N, Ponto pI, const Ponto &O, RGB kdif, RGB kesp, int m) const override
     {
         (void) pI; // pI nao eh usado em luz direcional
         
@@ -23,9 +35,7 @@ struct LuzDirecional : Luz {
         Vt V = -D;
         V.normaliza();
 
-        RGB amb = ambiente;
 
-        RGB I_a = ka.arroba(amb);
 
         double nL = max(N.ProdEsc(L), 0.0);
 
@@ -49,9 +59,9 @@ struct LuzDirecional : Luz {
         I_e.b *= e;
 
         // Soma final
-        double Rf = I_a.r + I_d.r + I_e.r;
-        double Gf = I_a.g + I_d.g + I_e.g;
-        double Bf = I_a.b + I_d.b + I_e.b;
+        double Rf =  I_d.r + I_e.r;
+        double Gf = I_d.g + I_e.g;
+        double Bf = I_d.b + I_e.b;
 
         return RGB(
             min(1.0, Rf),

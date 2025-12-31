@@ -8,13 +8,24 @@ struct LuzSpot : Luz {
     Vt dir;
     double cutoff;
 
-    LuzSpot(const RGB &I, const RGB &A, const Vt &d, double ang, const Ponto &pos) 
-        : Luz(I, A), posicao(pos), dir(d)  {
+    LuzSpot(const RGB &I, const Vt &d, double ang, const Ponto &pos) 
+        : Luz(I), posicao(pos), dir(d)  {
         dir.normaliza();
         cutoff = cos(ang * M_PI / 180.0);
     }
 
-    RGB ilumina(const Ponto P, Vt &N, Ponto pI, const Ponto &O, RGB kdif, RGB kesp, RGB ka, int m) const override{
+
+    double distanciaParaLuz(const Ponto &P) const override{
+        Vt diff = posicao - P;
+        return diff.norma();
+    }
+
+    Vt direcaoLuz(const Ponto &P) const override{
+        Vt L = posicao - P;
+        L.normaliza();
+        return L;
+    }
+    RGB ilumina(const Ponto P, Vt &N, Ponto pI, const Ponto &O, RGB kdif, RGB kesp, int m) const override{
         Vt D = P - O; D.normaliza();
 
         Vt L = posicao - pI; L.normaliza();
@@ -22,11 +33,8 @@ struct LuzSpot : Luz {
 
         double spotEffect = (-L).ProdEsc(dir);
 
-        RGB amb = ambiente;
-        RGB I_a = ka.arroba(amb);
-
         if(spotEffect < cutoff){
-            return I_a;
+            return 0;
         }
 
         double nL = N.ProdEsc(L);
@@ -51,9 +59,9 @@ struct LuzSpot : Luz {
         I_e.b = (I_e.b * e * spotEffect);
 
         
-        double R = (I_d.r+I_e.r+I_a.r);
-        double G = (I_d.g+I_e.g+I_a.g);
-        double B = (I_d.b+I_e.b+I_a.b);
+        double R = (I_d.r+I_e.r);
+        double G = (I_d.g+I_e.g);
+        double B = (I_d.b+I_e.b);
 
         return RGB(double( min(1.0, R)), double( min(1.0, G)), double(min(1.0, B)));
     }

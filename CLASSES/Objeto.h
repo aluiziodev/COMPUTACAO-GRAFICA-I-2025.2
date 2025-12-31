@@ -37,17 +37,18 @@ struct Objeto{
         Vt N = normal(pI);
         if(N.ProdEsc(D)>0.0) N = Vt(-N.x,-N.y,-N.z);
 
-        return luz.ilumina(P, N, pI, O, kdif, kesp, kamb, m);
+        return luz.ilumina(P, N, pI, O, kdif, kesp, m);
     }
 
 
 };
 
-bool shadowRay(Ponto &pI, Ponto &pF, Objeto *atual, vector<Objeto *> &cena){
-    Vt l = pF - pI;
-    double dist = sqrt(l.ProdEsc(l));
+bool shadowRay(Ponto &pI, const Luz &L, Objeto *atual, vector<Objeto *> &cena){
+    Vt l = L.direcaoLuz(pI);
+    double dist = L.distanciaParaLuz(pI);
+
     if(dist<=0.0) return false;
-    l.normaliza();
+
     double eps = 1e-5;
 
     Ponto pL = pI.pontoIntersecao(dist, l);

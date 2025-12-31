@@ -44,7 +44,7 @@ int main(){
     // PROPRIEDADES CANVAS
     double wJanela = 0.6;
     double hJanela = 0.6;
-    double dJanela = 0.3;
+    double dJanela = 0.3; //Aumentar é o Zoom-in, diminuir é o Zoom-out
     int nLin = 500;
     int nCol = 500;
 
@@ -166,22 +166,23 @@ int main(){
     //LUZ
 
     Ponto P_F(0, 0.0, 0);
-    RGB I_F(0.7,0.7,0.7);
-    RGB I_A(0.05, 0.05, 0.05);
+    Ponto P_F2(0.0, 0.5, 0);
+    RGB I_F(0.75,0.75,0.75);
+    RGB I_A(0.2, 0.2, 0.2);
 
-    RGB I_F2(0.05, 0.05, 0.05);
+    RGB I_F2(0.3, 0.3, 0.3);
 
-    LuzSpot LuzP(I_F, I_A, Vt(0.0, 0.0, -1.0), 20.0, P_F);
+    LuzSpot LuzP(I_F, Vt(0.0, 0.0, -1.0), 20.0, P_F);
+    LuzP.apontarPara(f1.P1);
  
-
-    LuzPontual LuzP2(I_F2, I_A, P_F);
+    LuzPontual LuzP2(I_F2, P_F2);
     
-    Cam.posicao = Ponto(0.0, 0.0, 0.0);
+    Cam.posicao = Ponto(.0, 0.0, .0);
 
-    // LuzDirecional LuzP(I_F, I_A, Vt(0.0, -1.0, -1.0));
+    LuzDirecional LuzP3(I_F, Vt(0.0, -1.0, .0));
 
     vector<Objeto *> cena = {&esfera, &cilindro, &pChao, &pParFront, &pLatDir, &pLatEsq, &pTeto, &cone, &malha};
-    vector<Luz*> luzes = {&LuzP, &LuzP2};
+    vector<Luz*> luzes = { &LuzP, &LuzP2};
 
     for(int g = 0; g<nLin; g++){
         for(int c = 0; c<nCol; c++){
@@ -209,8 +210,9 @@ int main(){
                         RGB cor(0,0,0);
 
                         cor = obj->kamb.arroba(I_A);
+
                         for(const Luz* L : luzes){
-                            if(shadowRay(pI, P_F, obj, cena)){
+                            if(shadowRay(pI, *L, obj, cena)){
                                 continue;
                             }
                             else if(obj->usaText){

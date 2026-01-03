@@ -84,11 +84,14 @@ typedef struct Camera{
         
     // }
 
-    void LookAt( Ponto Alvo){
+    void LookAt( Ponto Alvo, Vt up = Vt(0,1,0)){
         this->W = Alvo - this->posicao;
         this->W.normaliza();
 
-        this->U = this->W.prodVet(this->V);
+        if(abs(this->W.ProdEsc(up)) >0.999)
+            up = Vt(0,0,1);
+        
+        this->U = this->W.prodVet(up);
         this->U.normaliza();
 
         this->V = this->U.prodVet(this->W);

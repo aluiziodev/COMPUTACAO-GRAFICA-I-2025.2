@@ -44,7 +44,7 @@ int main(){
     // PROPRIEDADES CANVAS
     double wJanela = 0.6;
     double hJanela = 0.6;
-    double dJanela = 0.3; //Aumentar é o Zoom-in, diminuir é o Zoom-out
+
     int nLin = 500;
     int nCol = 500;
 
@@ -178,6 +178,7 @@ int main(){
     LuzPontual LuzP2(I_F2, P_F2);
     
     Cam.posicao = Ponto(.0, 0.0, .0);
+   
 
     LuzDirecional LuzP3(I_F, Vt(0.0, -1.0, .0));
 

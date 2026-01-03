@@ -90,6 +90,27 @@ public:
 
         return cis;
     }
+
+    static Matriz EspelharXZ(){
+        Matriz m;
+        m(1,1) = -1;
+
+        return m;
+    }
+
+    static Matriz EspelharYZ(){
+        Matriz m;
+        m(0,0) = -1;
+
+        return m;
+    }
+
+    static Matriz EspelharXY(){
+        Matriz m;
+        m(2,2) = -1;
+
+        return m;
+    }
 };
 
 

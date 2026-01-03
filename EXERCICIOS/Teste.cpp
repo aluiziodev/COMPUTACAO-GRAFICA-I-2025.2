@@ -184,6 +184,8 @@ int main(){
     vector<Objeto *> cena = {&esfera, &cilindro, &pChao, &pParFront, &pLatDir, &pLatEsq, &pTeto, &cone, &malha};
     vector<Luz*> luzes = { &LuzP, &LuzP2};
 
+    Cam.zoomIn(0.65);
+
     for(int g = 0; g<nLin; g++){
         for(int c = 0; c<nCol; c++){
             double x = -wJanela/2 + Dx/2 + c*Dx;
@@ -192,7 +194,7 @@ int main(){
             Ponto P = Cam.posicao +
                       Cam.U * x +
                       Cam.V * y +
-                      Cam.W * dJanela;
+                      Cam.W * Cam.d;
 
             double tmin = -1.0;
 
@@ -224,12 +226,12 @@ int main(){
                         }
                         cone.temBase = false;
                         corFinal = cor;
-                        corFinal.clamp();
+                        
                     }
                 }
             }
 
-            
+            corFinal.clamp();
             canvas.janela[g*nCol+c] = corFinal;
                  
         }
@@ -243,8 +245,5 @@ int main(){
     stbi_image_free(textura);
 
     return 0;
-
-
-
-    
+ 
 }

@@ -5,14 +5,24 @@ typedef struct Camera{
     Vt U; //direita
     Vt V; //cima
     Vt W; //frente
+    double d;
 
     Camera(Ponto posicao = Ponto(0,0,0), Vt U = Vt(1,0,0), Vt V = Vt(0,1,0), Vt W = Vt(0,0,-1)){
         this->posicao = posicao;
+        this->d = 0.3; //Vamos deixar essa distancia por padrão 
         this->U = U;
         this->V = V;
         this->W = W;
     }
     
+    void zoomIn(double z){
+        d = min( 15.0 ,  d*z);
+    }
+
+    void zoomOut(double z){
+        d = max(0.01, d/z);
+    }
+
     void girarDireitaEsquerda(double angulo){
         double rad = angulo * M_PI / 180.0;
         double c = cos(rad);

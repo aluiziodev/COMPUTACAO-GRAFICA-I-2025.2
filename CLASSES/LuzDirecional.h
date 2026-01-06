@@ -1,7 +1,7 @@
 #ifndef LUZDIRECIONAL_H
 #define LUZDIRECIONAL_H
 
-#include "luz.h"
+#include "Luz.h"
 
 struct LuzDirecional : Luz {
     Vt dir;

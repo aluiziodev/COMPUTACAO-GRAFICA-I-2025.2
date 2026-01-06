@@ -1,7 +1,7 @@
 #ifndef LUZPONTUAL_H
 #define LUZPONTUAL_H
 
-#include "luz.h"
+#include "Luz.h"
 
 using namespace std;
 

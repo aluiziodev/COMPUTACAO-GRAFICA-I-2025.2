@@ -1,7 +1,7 @@
 #ifndef LUZSPOT_H
 #define LUZSPOT_H
 
-#include "luz.h"
+#include "Luz.h"
 
 struct LuzSpot : Luz {
     Ponto posicao;

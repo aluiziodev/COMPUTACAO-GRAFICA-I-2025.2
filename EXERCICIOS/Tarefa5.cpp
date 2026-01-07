@@ -9,13 +9,8 @@
 #include "../CLASSES/Janela.h"
 #include "../CLASSES/Vetores.h"
 #include "../CLASSES/Objeto.h"
-#include "../CLASSES/Transformacoes.h"
-#include "../CLASSES/Camera.h"
-#include "../CLASSES/Matriz.h"
-#include "../CLASSES/Luz.h"
 #include "../CLASSES/LuzPontual.h"
-#include "../CLASSES/LuzSpot.h"
-#include "../CLASSES/LuzDirecional.h"
+#include "../CLASSES/Camera.h"
 
 #define STB_IMAGE_IMPLEMENTATION
 #include "../LIBS/stb_image.h"
@@ -34,17 +29,14 @@ int main(){
         return -1;
     }
 
-    int texW2, texH2, Canais2;
-    unsigned char* textura_folha = stbi_load("../../TEXTURAS/folhas.jpg", &texW2, &texH2, &Canais2, 0);
-    if (!textura_folha) {
-        cerr << "Erro ao carregar textura!\n";
-        return -1;
-    }
+
+
+
+
 
     // PROPRIEDADES CANVAS
     double wJanela = 0.6;
     double hJanela = 0.6;
-
     int nLin = 500;
     int nCol = 500;
 
@@ -53,9 +45,8 @@ int main(){
 
     Canvas canvas(nLin, nCol);
 
-    Ponto Posicao = Ponto(0, 0 , 0);
-
-    Camera Cam(Posicao);
+    Camera Cam(Pt(0.0, 0.0, 0.0));
+    
 
 
     // PLANO 1 (CHAO)
@@ -110,7 +101,6 @@ int main(){
 
     Cone cone(0.9, 1.5, Pt (0.0, -0.6, -2.0), Vt(0.0, 1.0, 0.0));
     cone.temBase = false;
-    cone.colocaText(textura_folha, texW2, texH2, Canais2);
     cone.kdif = RGB(0.0, 1.0, 0.498);
     cone.kesp = RGB(0.0, 1.0, 0.498);
     cone.kamb = RGB(0.0, 1.0, 0.498);
@@ -124,8 +114,14 @@ int main(){
     esfera.kamb = RGB(0.854, 0.647, 0.125);
     esfera.m = 1;
 
-    
-   
+    //LUZ
+
+
+    LuzPontual luz(RGB(0.7, 0.7, 0.7),Pt(-1.0, 1.4, -0.2));
+    RGB I_A = RGB(0.3, 0.3, 0.3);
+
+
+
 
     //CUBO
 
@@ -163,88 +159,61 @@ int main(){
     malha.kamb = RGB(1., 0.078, 0.576);
     malha.m = 1;
 
-    //LUZ
-
-    Ponto P_F(0, 0.0, 0);
-    Ponto P_F2(0.0, 0.5, 0);
-    RGB I_F(0.75,0.75,0.75);
-    RGB I_A(0.2, 0.2, 0.2);
-
-    RGB I_F2(0.3, 0.3, 0.3);
-
-    LuzSpot LuzP(I_F, Vt(0.0, 0.0, -1.0), 20.0, P_F);
-    LuzP.apontarPara(f1.P1);
- 
-    LuzPontual LuzP2(I_F2, P_F2);
     
-    Cam.posicao = Ponto(.0, 0.0, .0);
-   
-
-    LuzDirecional LuzP3(I_F, Vt(0.0, -1.0, .0));
 
     vector<Objeto *> cena = {&esfera, &cilindro, &pChao, &pParFront, &pLatDir, &pLatEsq, &pTeto, &cone, &malha};
-    vector<Luz*> luzes = { &LuzP, &LuzP2};
-
-    Cam.zoomIn(0.65);
 
     for(int g = 0; g<nLin; g++){
         for(int c = 0; c<nCol; c++){
             double x = -wJanela/2 + Dx/2 + c*Dx;
             double y = hJanela/2 - Dy/2 - g*Dy;
-
             Ponto P = Cam.posicao +
                       Cam.U * x +
                       Cam.V * y +
                       Cam.W * Cam.d;
-
             double tmin = -1.0;
 
-            RGB corFinal(0,0,0);
-
+            RGB corFinal(0.0, 0.0, 0.0);
             for(Objeto *obj : cena){
                 if(obj->intersecta(Cam.posicao, P)){
                     if(obj->t>0 && (tmin<0 || obj->t<tmin)){
-                        
                         tmin = obj->t;
                         Vt D = P - Cam.posicao; D.normaliza();
-
                         Ponto pI= Cam.posicao.pontoIntersecao(obj->t, D);
                         cone.temBase = true;
-                        RGB cor(0,0,0);
-
+                        RGB cor(0.0, 0.0, 0.0);
                         cor = obj->kamb.arroba(I_A);
-
-                        for(const Luz* L : luzes){
-                            if(shadowRay(pI, *L, obj, cena)){
-                                continue;
-                            }
-                            else if(obj->usaText){
-                                cor += obj->pintaTextura(*L, Cam.posicao, P);
-                            }
-                            else{
-                                cor += obj->pinta(*L, Cam.posicao, P);
-                            }
+                        if(shadowRay(pI, luz , obj, cena)){
+                            cor = obj->kamb.arroba(I_A);
                         }
-                        cone.temBase = false;
+                        else if(obj->usaText){
+                            cor += obj->pintaTextura(luz, Cam.posicao, P);
+                        }
+                        else{
+                            cor += obj->pinta(luz, Cam.posicao, P);
+                        }
                         corFinal = cor;
-                        
+                        cone.temBase = false;
                     }
                 }
             }
-
             corFinal.clamp();
             canvas.janela[g*nCol+c] = corFinal;
-                 
+            
+
+            
+            
         }
         
     }
 
-    canvas.GeraImg("teste.ppm");
+    canvas.GeraImg("tarefa5.ppm");
 
     cout << "concluido \n";
 
-    stbi_image_free(textura);
-
     return 0;
- 
+
+
+
+    
 }

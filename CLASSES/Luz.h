@@ -6,8 +6,8 @@
 
 typedef struct Luz{
    
-    const RGB intensidade;
-    const RGB ambiente;
+    RGB intensidade;
+    RGB ambiente;
 
     Luz(const RGB &I) : intensidade(I) {}
 

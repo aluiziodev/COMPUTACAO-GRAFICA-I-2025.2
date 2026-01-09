@@ -1,0 +1,45 @@
+# Compilação
+output/
+*.o
+*.obj
+*.exe
+*.out
+*.app
+*.a
+*.so
+*.dll
+*.lib
+
+# Makefile / CMake
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+Makefile
+build/
+out/
+bin/
+obj/
+
+# Debug e logs
+*.log
+*.ida
+*.idb
+*.pdb
+*.dSYM/
+
+# Arquivos temporários
+*.tmp
+*.swp
+*~
+*.DS_Store
+
+# Visual Studio / Code::Blocks / CLion / etc
+.vscode/
+.vs/
+*.user
+*.suo
+*.ncb
+*.opencv
+*.code-workspace
+*.cbp
+.idea/

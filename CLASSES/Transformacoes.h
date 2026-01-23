@@ -44,6 +44,30 @@ public:
         return rot;
     }
 
+    static Matriz rotacaoArbitrarioOrigem(double angulo, Vect eixo){ // eixo tem que passar pela origem
+        Matriz rot;
+        double rad = angulo * M_PI / 180.0;
+        double c = cos(rad);
+        double s = sin(rad);
+
+        rot(0,0) = c + pow(eixo.x, 2)*(1-c);
+        rot(0,1) = eixo.x*eixo.y*(1-c) - eixo.z*s;
+        rot(0,2) = eixo.x*eixo.z*(1-c)+eixo.y*s;
+        rot(1,0) = eixo.x*eixo.y*(1-c) + eixo.z*s;
+        rot(1,1) = c + pow(eixo.y, 2)*(1-c);
+        rot(1,2) = eixo.y*eixo.z*(1-c)-eixo.x*s;
+        rot(2,0) = eixo.x*eixo.z*(1-c)-eixo.y*s;
+        rot(2,1) = eixo.y*eixo.z*(1-c)+eixo.x*s;
+        rot(2,2) = c + pow(eixo.z, 2)*(1-c);
+
+
+        return rot;
+
+
+
+    }
+
+
     static Matriz transladar(double dx, double dy, double dz){
         Matriz tra; 
 

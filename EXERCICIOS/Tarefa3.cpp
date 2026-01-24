@@ -27,7 +27,7 @@ int main(){
 
     Canvas canvas(nLin, nCol);
 
-    Camera Cam(Pt(0.0, 0.0, 0.0));
+    Camera Cam( wJanela, hJanela, Pt(0.0, 0.0, 0.0));
 
 
     // PROPRIEDADES LUZ

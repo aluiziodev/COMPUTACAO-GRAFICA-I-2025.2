@@ -47,6 +47,7 @@ public:
 
     static Matriz rotacaoArbitrarioOrigem(double angulo, Vect eixo){ // eixo tem que passar pela origem
         Matriz rot;
+        eixo.normaliza();
         double rad = angulo * M_PI / 180.0;
         double c = cos(rad/2);
         double s = sin(rad/2);

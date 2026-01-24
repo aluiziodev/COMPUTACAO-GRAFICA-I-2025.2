@@ -1,4 +1,9 @@
+#ifndef CAMERA_H
+#define CAMERA_H
+
 #include "Vetores.h"
+
+
 
 typedef struct Camera{
     Ponto posicao;
@@ -101,3 +106,5 @@ typedef struct Camera{
     }
 
 }Cam;
+
+#endif

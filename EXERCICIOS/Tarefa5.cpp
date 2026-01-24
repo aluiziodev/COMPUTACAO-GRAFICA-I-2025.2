@@ -43,7 +43,7 @@ int main(){
     double Dx = wJanela/nCol;
     double Dy = hJanela/nLin;
 
-    Canvas canvas(nLin, nCol);
+    
 
     Camera Cam( wJanela, hJanela, Pt(0.0, 0.0, 0.0));
     
@@ -120,6 +120,8 @@ int main(){
     LuzPontual luz(RGB(0.7, 0.7, 0.7),Pt(-1.0, 1.4, -0.2));
     RGB I_A = RGB(0.3, 0.3, 0.3);
 
+
+    Canvas canvas(nLin, nCol, wJanela, hJanela, Cam, I_A);
 
 
 

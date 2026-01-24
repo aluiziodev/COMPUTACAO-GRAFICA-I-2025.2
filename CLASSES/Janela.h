@@ -3,6 +3,7 @@
 
 #include <bits/stdc++.h>
 
+
 using namespace std;
 
 typedef struct RGB { 
@@ -47,38 +48,4 @@ typedef struct RGB {
 } RGB;
 
 
-typedef struct Canvas{
-    int w, h;
-    vector<RGB> janela;
-
-    Canvas(int w, int h){
-        this->w = w;
-        this->h = h;
-        this->janela = vector<RGB> (w*h, RGB(0.0, 0.0, 0.0));
-    }
-
-    void GeraImg(const string& filename) {
-        ofstream out(filename);
-        out << "P3\n" << w << " " << h << "\n255\n";
-        for (int i = 0; i < w*h; i++) {
-            double r = janela[i].r;
-            double g = janela[i].g;
-            double b = janela[i].b;
-
-            r = min(1.0, max(0.0, r));
-            g = min(1.0, max(0.0, g));
-            b = min(1.0, max(0.0, b));
-
-            int R = int(r * 255.0);
-            int G = int(g * 255.0);
-            int B = int(b * 255.0);
-
-            out << R << " " << G << " " << B << "\n";
-        }
-        out.close();
-    }
-} Canvas;
-
-
 #endif
-

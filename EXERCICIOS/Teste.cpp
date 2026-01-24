@@ -16,6 +16,7 @@
 #include "../CLASSES/LuzPontual.h"
 #include "../CLASSES/LuzSpot.h"
 #include "../CLASSES/LuzDirecional.h"
+#include "../CLASSES/Canvas.h"
 
 #define STB_IMAGE_IMPLEMENTATION
 #include "../LIBS/stb_image.h"
@@ -41,22 +42,12 @@ int main(){
         return -1;
     }
 
-    // PROPRIEDADES CANVAS
-    double wJanela = 0.6;
-    double hJanela = 0.6;
-
     int nLin = 500;
     int nCol = 500;
 
-    double Dx = wJanela/nCol;
-    double Dy = hJanela/nLin;
 
-    Canvas canvas(nLin, nCol);
-
-    Ponto Posicao = Ponto(0, 0 , 0);
-
-    Camera Cam(Posicao);
-
+    Camera Cam(500, 500);
+    
 
     // PLANO 1 (CHAO)
     Plano pChao(Pt(0, -1.5, 0.0), Vt(0.0, 1.0, 0.0));
@@ -100,15 +91,15 @@ int main(){
 
     //CILINDRO 
 
-    Cilindro cilindro(0.05, 0.9 , Pt(0.0, -1.5, -2.0), Vt(0.0, 1.0, 0.0));
+    Cilindro cilindro(1, 0.05, 0.9 , Pt(0.0, -1.5, -2.0), Vt(0.0, 1.0, 0.0));
     cilindro.kdif = RGB(0.824, 0.706, 0.549);
     cilindro.kesp = RGB(0.824, 0.706, 0.549);
     cilindro.kamb = RGB(0.824, 0.706, 0.549);
     cilindro.m = 1;
 
     //CONE
-
-    Cone cone(0.9, 1.5, Pt (0.0, -0.6, -2.0), Vt(0.0, 1.0, 0.0));
+    
+    Cone cone(2, 0.9, 1.5, Pt (0.0, -0.6, -2.0), Vt(0.0, 1.0, 0.0));
     cone.temBase = false;
     cone.colocaText(textura_folha, texW2, texH2, Canais2);
     cone.kdif = RGB(0.0, 1.0, 0.498);
@@ -118,14 +109,14 @@ int main(){
 
     //ESFERA
 
-    Esfera esfera(0.05, Pt(0.0, 0.95, -2.0));
+    Esfera esfera(3, 0.05, Pt(0.0, 0.95, -2.0));
     esfera.kdif = RGB(0.854, 0.647, 0.125);
     esfera.kesp = RGB(0.854, 0.647, 0.125);
     esfera.kamb = RGB(0.854, 0.647, 0.125);
     esfera.m = 1;
 
     
-   
+
 
     //CUBO
 
@@ -157,7 +148,7 @@ int main(){
     
     vector<Triangulo> faces = { f0, f1, f2, f3, f4, f5, f6, f7, f8, f9, f10, f11};
 
-    Malha malha(vertices, faces);
+    Malha malha(4, vertices, faces);
     malha.kdif = RGB(1., 0.078, 0.576);
     malha.kesp = RGB(1., 0.078, 0.576);
     malha.kamb = RGB(1., 0.078, 0.576);
@@ -187,59 +178,21 @@ int main(){
 
     Cam.zoomIn(0.65);
 
-    for(int g = 0; g<nLin; g++){
-        for(int c = 0; c<nCol; c++){
-            double x = -wJanela/2 + Dx/2 + c*Dx;
-            double y = hJanela/2 - Dy/2 - g*Dy;
+    Canvas canvas(nCol, nLin, &Cam, I_A);
 
-            Ponto P = Cam.posicao +
-                      Cam.U * x +
-                      Cam.V * y +
-                      Cam.W * Cam.d;
-
-            double tmin = -1.0;
-
-            RGB corFinal(0,0,0);
-
-            for(Objeto *obj : cena){
-                if(obj->intersecta(Cam.posicao, P)){
-                    if(obj->t>0 && (tmin<0 || obj->t<tmin)){
-                        
-                        tmin = obj->t;
-                        Vt D = P - Cam.posicao; D.normaliza();
-
-                        Ponto pI= Cam.posicao.pontoIntersecao(obj->t, D);
-                        cone.temBase = true;
-                        RGB cor(0,0,0);
-
-                        cor = obj->kamb.arroba(I_A);
-
-                        for(const Luz* L : luzes){
-                            if(shadowRay(pI, *L, obj, cena)){
-                                continue;
-                            }
-                            else if(obj->usaText){
-                                cor += obj->pintaTextura(*L, Cam.posicao, P);
-                            }
-                            else{
-                                cor += obj->pinta(*L, Cam.posicao, P);
-                            }
-                        }
-                        cone.temBase = false;
-                        corFinal = cor;
-                        
-                    }
-                }
-            }
-
-            corFinal.clamp();
-            canvas.janela[g*nCol+c] = corFinal;
-                 
-        }
-        
+    for(Objeto* obj : cena){
+        canvas.adicionarObjeto(obj);
+    }
+    for(Luz* luz : luzes){
+        canvas.adicionarLuz(luz);
     }
 
+    //    cilindro = 1 Cone= 2 Esfera=3 Malha=4
+
+
     canvas.GeraImg("teste.ppm");
+
+    cout<< canvas.pick(253, 450) << "\n";
 
     cout << "concluido \n";
 

@@ -13,7 +13,8 @@ struct Malha : Objeto{
     vector<Triangulo> faces;
     Vt N;
 
-    Malha(vector<Ponto> v, vector<Triangulo> f){
+    Malha(int id, vector<Ponto> v, vector<Triangulo> f){
+        this->id = id;
         vertices = v;
         faces = f;
         kdif = {0, 0, 0};

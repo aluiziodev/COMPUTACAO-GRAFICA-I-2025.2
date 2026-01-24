@@ -9,6 +9,7 @@
 
 struct Objeto{
     RGB kdif, kesp, kamb;
+    int id;
     int m;
     double t;
     bool usaText;
@@ -43,7 +44,7 @@ struct Objeto{
 
 };
 
-bool shadowRay(Ponto &pI, const Luz &L, Objeto *atual, vector<Objeto *> &cena){
+inline bool shadowRay(Ponto &pI, const Luz &L, Objeto *atual, vector<Objeto *> &cena){
     Vt l = L.direcaoLuz(pI);
     double dist = L.distanciaParaLuz(pI);
 

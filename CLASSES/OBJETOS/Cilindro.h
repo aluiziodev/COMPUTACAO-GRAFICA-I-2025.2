@@ -16,7 +16,8 @@ struct Cilindro : Objeto{
     Ponto Cbase;
     Vt dCil;
 
-    Cilindro(double raio, double alt, Ponto centro, Vt d){
+    Cilindro(int id, double raio, double alt, Ponto centro, Vt d){
+        this->id = id;
         r = raio;
         Cbase = centro;
         hCil = alt;

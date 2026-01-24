@@ -17,7 +17,8 @@ struct Cone : Objeto{
     Ponto Cbase;
     Vt dCone;
     bool temBase;
-    Cone(double raio, double alt, Ponto centro, Vect d){
+    Cone(int id, double raio, double alt, Ponto centro, Vect d){
+        this->id = id;
         r = raio;
         Cbase = centro;
         hCone = alt;

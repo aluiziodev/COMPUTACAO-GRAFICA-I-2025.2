@@ -17,6 +17,7 @@ struct Plano : Objeto{
     
 
     Plano(Ponto P0, Vect N){
+        this->id= -1;
         this->P0 = P0;
         this->N = N;
         this->kdif= RGB(0.0, 0.0, 0.0);

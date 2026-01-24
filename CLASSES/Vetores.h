@@ -25,6 +25,10 @@ typedef struct Vect{
     Vect operator*(const double &v)const {
         return Vect(x*v, y*v, z*v);
     }
+
+    Vect operator/(const double &v)const {
+        return Vect(x/v, y/v, z/v);
+    }
     Vect operator+(const double &v)const {
         return Vect(x+v, y+v, z+v);
     }

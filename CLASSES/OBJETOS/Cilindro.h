@@ -117,6 +117,15 @@ struct Cilindro : Objeto{
     void aplicaTransformacao(Matriz &T) override{
         Cbase = T * Cbase;
         dCil = T * dCil;
+        dCil.normaliza();
+        double s = sqrt(
+            T(0,0)*T(0,0) + 
+            T(1,0)*T(1,0) +
+            T(2,0)*T(2,0)
+        );
+
+        r    *= s;
+        hCil *= s;
     }
 
 

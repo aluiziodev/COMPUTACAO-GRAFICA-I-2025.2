@@ -18,7 +18,7 @@ struct Arvore : ObjetoMulti{
         this->id = id;
         this->componentes = vector<Objeto *>();
         //CILINDRO TRONCO ARVORE
-        Cilindro *tronco = new Cilindro(17, 0.3, 4, Pt(14, 0, 23.0), Vt(0, 1, 0.0));
+        Cilindro *tronco = new Cilindro(17, 0.3, 4, Pt(14, 0.01, 23.0), Vt(0, 1, 0.0));
         tronco->kdif = RGB(0.545, 0.271, 0.075);
         tronco->kesp = RGB(0.545, 0.271, 0.075);
         tronco->kamb = RGB(0.545, 0.271, 0.075);

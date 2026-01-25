@@ -20,6 +20,7 @@
 #include "SnowMan.h"
 #include "Arvore.h"
 #include "Poste.h"
+#include "Banco.h"
 
 #define STB_IMAGE_IMPLEMENTATION
 #include "../LIBS/stb_image.h"
@@ -43,11 +44,13 @@ int main(){
     int nLin = 500;
     int nCol = 500;
 
-    Camera Cam(500, 500, Pt(25.0, 25.0, 0.0));
+    Camera Cam(500, 500, Pt(50.0, 20.0, 0.0));
 
-    Cam.LookAt(Pt(25.0, 0.0, 40.0));
+    Cam.LookAt(Pt(19.0, 0, 43.0));
 
-    Cam.zoomOut(2);
+    Cam.zoomOut(1.3);
+
+    
 
 
     vector<Objeto *> cena;
@@ -86,8 +89,13 @@ int main(){
 
 
 
-
+    Matriz translacaoOrigemSnowM = Transformacoes::transladar(-12.5, 0, -15);
+    Matriz rotY30 = Transformacoes::rotacaoY(-30);
+    Matriz translacaoSnowman = Transformacoes::transladar(15.0, 0, 37.0);
     SnowMan snowman(1);
+    snowman.aplicaTransformacao(translacaoOrigemSnowM);
+    snowman.aplicaTransformacao(rotY30);
+    snowman.aplicaTransformacao(translacaoSnowman);
     snowman.adicionaCena(cena);
 
 
@@ -100,9 +108,9 @@ int main(){
     Poste poste2(7);
     Matriz transladaOrigem = Transformacoes::transladar(-18, 0, -17);
     Matriz transladaPoste2 = Transformacoes::transladar(15, 0, 32);
-    Matriz rotY = Transformacoes::rotacaoY(180);
+    Matriz rotY180 = Transformacoes::rotacaoY(180);
     poste2.aplicaTransformacao(transladaOrigem);
-    poste2.aplicaTransformacao(rotY);
+    poste2.aplicaTransformacao(rotY180);
     poste2.aplicaTransformacao(transladaPoste2);
     poste2.adicionaCena(cena);
 
@@ -119,7 +127,7 @@ int main(){
     Poste poste4(9);
     Matriz transladaPoste4 = Transformacoes::transladar(15, 0, 14);
     poste4.aplicaTransformacao(transladaOrigem);
-    poste4.aplicaTransformacao(rotY);
+    poste4.aplicaTransformacao(rotY180);
     poste4.aplicaTransformacao(transladaPoste4);
     poste4.adicionaCena(cena);
 
@@ -127,7 +135,11 @@ int main(){
 
 
     Arvore arvore(2);
-    Matriz transladaArv = Transformacoes::transladar(5, 0, 20);
+    Matriz transladaOrigemArv = Transformacoes::transladar(-14.0, 0, -23.0);
+    Matriz escalaArv1 = Transformacoes::escalar(1.5, 1.5, 1.5);
+    Matriz transladaArv = Transformacoes::transladar(19.0, 0.0, 43.0);
+    arvore.aplicaTransformacao(transladaOrigemArv);
+    arvore.aplicaTransformacao(escalaArv1);
     arvore.aplicaTransformacao(transladaArv);
     arvore.adicionaCena(cena);
 
@@ -145,9 +157,30 @@ int main(){
 
 
     Arvore arvore4(5);
-    Matriz transladaArv4 = Transformacoes::transladar(-7, 0, 10);
+    Matriz escalaArv2 = Transformacoes::escalar(0.7, 0.7, 0.7);
+    Matriz transladaArv4 = Transformacoes::transladar(7, 0, 33);
+    arvore4.aplicaTransformacao(transladaOrigemArv);
+    arvore4.aplicaTransformacao(escalaArv2);
     arvore4.aplicaTransformacao(transladaArv4);
     arvore4.adicionaCena(cena);
+
+    Arvore arvore5(12);
+    Matriz transladaArv5= Transformacoes::transladar(-7, 0, -10.0);
+    arvore5.aplicaTransformacao(transladaArv5);
+    arvore5.adicionaCena(cena);
+
+    Banco banco1(10);
+    banco1.adicionaCena(cena);
+
+    Banco banco2(11);
+    Matriz transladaOrigemBanco = Transformacoes::transladar(-14.1, -1.9, -23.05);
+    Matriz transladaBanco2= Transformacoes::transladar(45.0, 1.9, 23.05);
+    banco2.aplicaTransformacao(transladaOrigemBanco);
+    banco2.aplicaTransformacao(rotY180);
+    banco2.aplicaTransformacao(transladaBanco2);
+    banco2.adicionaCena(cena);
+
+    
 
 
     

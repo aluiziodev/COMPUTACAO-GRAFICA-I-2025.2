@@ -64,9 +64,9 @@ struct LuzDirecional : Luz {
         double Bf = I_d.b + I_e.b;
 
         return RGB(
-            min(1.0, Rf),
-            min(1.0, Gf),
-            min(1.0, Bf)
+            float(min(1.0, Rf)),
+            float(min(1.0, Gf)),
+            float(min(1.0, Bf))
         );
     }
     

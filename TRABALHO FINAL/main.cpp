@@ -40,7 +40,7 @@ using namespace std;
 int main(int argc, char **argv){
 
     int texW2, texH2, Canais2;
-    unsigned char* textura_grama = stbi_load("../../TEXTURAS/neve.jpg", &texW2, &texH2, &Canais2, 0);
+    unsigned char* textura_grama = stbi_load("../TEXTURAS/neve.jpg", &texW2, &texH2, &Canais2, 0);
     if (!textura_grama) {
         cerr << "Erro ao carregar textura!\n";
         return -1;

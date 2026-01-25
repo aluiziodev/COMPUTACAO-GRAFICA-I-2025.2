@@ -10,10 +10,10 @@
 using namespace std;
 
 typedef struct RGB { 
-    double r, g, b;
+    float r, g, b;
 
     
-    RGB(double r=0, double g=0, double b=0){
+    RGB(float r=0, float g=0, float b=0){
         this->r = r;
         this->g = g;
         this->b = b;
@@ -27,9 +27,9 @@ typedef struct RGB {
     }
 
     void clamp(){
-        this->r = min(1.0, max(0.0, r));
-        this->g = min(1.0, max(0.0, g));
-        this->b = min(1.0, max(0.0, b));
+        this->r = min(float(1), max(float(0), r));
+        this->g = min(float(1), max(float(0), g));
+        this->b = min(float(1), max(float(0), b));
     }
 
     void padronizaRGB(){

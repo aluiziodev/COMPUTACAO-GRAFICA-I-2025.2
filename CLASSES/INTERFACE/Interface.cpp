@@ -21,23 +21,33 @@ void Interface::inicializa(int argc, char **argv, int w, int h, Canvas *canvas, 
 void Interface::display() {
     glClear(GL_COLOR_BUFFER_BIT);
 
-    if(canvas){
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    gluOrtho2D(0, largura, 0, altura);
+
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
+
+    if (canvas) {
         float zoomX = (float)largura / canvas->w;
         float zoomY = (float)altura / canvas->h;
+        float zoomFinal = min(zoomX, zoomY);
 
-        float zoomFinal = (zoomX < zoomY) ? zoomX : zoomY;
+        int offsetX = (largura - canvas->w * zoomFinal) / 2;
+        int offsetY = (altura - canvas->h * zoomFinal) / 2;
 
-        int offsetX = (largura - (canvas->w * zoomFinal)) / 2;
-        int offsetY = (altura - (canvas->h * zoomFinal)) / 2;
-
-        glRasterPos2i(offsetX, offsetY + (canvas->h * zoomFinal));
+        glRasterPos2i(offsetX, offsetY + canvas->h * zoomFinal);
         glPixelZoom(zoomFinal, -zoomFinal);
 
-        glDrawPixels(canvas->w, canvas->h, GL_RGB, GL_FLOAT, canvas->janela.data());
-
+        glDrawPixels(
+            canvas->w,
+            canvas->h,
+            GL_RGB,
+            GL_FLOAT,
+            canvas->janela.data()
+        );
     }
 
-    glFlush();
     glutSwapBuffers();
 }
 

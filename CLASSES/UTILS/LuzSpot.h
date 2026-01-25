@@ -63,7 +63,7 @@ struct LuzSpot : Luz {
         double G = (I_d.g+I_e.g);
         double B = (I_d.b+I_e.b);
 
-        return RGB(double( min(1.0, R)), double( min(1.0, G)), double(min(1.0, B)));
+        return RGB(float( min(1.0, R)), float( min(1.0, G)), float(min(1.0, B)));
     }
 
     void apontarPara(const Ponto &P){

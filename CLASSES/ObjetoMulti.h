@@ -7,8 +7,27 @@
 #include "Objeto.h"
 #include "Vetores.h"
 
-typedef struct ObjetoMulti {
+struct ObjetoMulti {
     int id;
+    vector<Objeto *> componentes;
+
+    virtual ~ObjetoMulti() {}
+
+    void addComponente(Objeto &obj){
+        componentes.push_back(&obj);
+    }
+
+    void aplicaTransformacao(Matriz &M){
+        for (auto *obj : componentes){
+            obj->aplicaTransformacao(M);
+        }
+    }
+
+    void adicionaCena(vector<Objeto *> &cena){
+        for (auto *obj: componentes){
+            cena.push_back(obj);
+        }
+    }
 };
 
 

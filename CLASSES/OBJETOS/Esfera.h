@@ -2,10 +2,13 @@
 #define ESFERA_H
 
 
-#include <bits/stdc++.h>
-#include "../../CLASSES/Janela.h"
-#include "../../CLASSES/Vetores.h"
-#include "../../CLASSES/Objeto.h"
+#include <iostream>
+#include <vector>
+#include <cmath>
+
+#include "../UTILS/Janela.h"
+#include "../UTILS/Vetores.h"
+#include "../UTILS/Objeto.h"
 
 using namespace std;
 

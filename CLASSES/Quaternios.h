@@ -8,7 +8,7 @@ typedef struct Quaternio{
     float w;
     Vect v;
 
-    Quaternio(float w = 1, Vect v = (0, 0, 0)){
+    Quaternio(float w = 1, Vect v = Vt(0, 0, 0)){
         this->w = w;
         this->v = v;
     }

@@ -49,7 +49,7 @@ typedef struct Canvas{
 
                 Ponto P = cam->posicao +
                         cam->U * x +
-                        cam->V * y +
+                        cam->V * y -
                         cam->W * cam->d;
 
                 double tmin = -1.0;

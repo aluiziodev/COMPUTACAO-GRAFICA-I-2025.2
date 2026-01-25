@@ -82,6 +82,10 @@ typedef struct Ponto{
     Ponto operator+(const Vect &v) const{
         return Ponto(x+v.x, y+v.y, z+v.z);
     }
+    Ponto operator-(const Vect &v) const{
+        return Ponto(x-v.x, y-v.y, z-v.z);
+    }
+
 
 } Pt;
 

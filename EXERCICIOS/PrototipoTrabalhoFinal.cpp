@@ -44,9 +44,7 @@ int main(){
 
     Cam.LookAt(Pt(25.0, 0.0, 40.0));
 
-    Cam.zoomOut(2);
-
-
+    Cam.zoomOut(4);
 
 
     vector<Objeto *> cena;
@@ -478,10 +476,10 @@ int main(){
 
     
 
-    RGB iF(0.3,0.3,0.3);
+    RGB iF(0.25,0.25,0.25);
     //RGB iFd(0.5, 0.5, 0.7);
-    RGB iFp(0.3, 0.3, 0.5);
-    RGB iA(0.2, 0.2, 0.2);
+    RGB iFp(0.35, 0.35, 0.55);
+    RGB iA(0.19, 0.19, 0.24);
 
     LuzSpot luzS(iF, Vt(0,-1,0), 40.0,  Pt(38.1, 11, 32.0));
     luzS.apontarPara(Pt(35.1, 0, 32));

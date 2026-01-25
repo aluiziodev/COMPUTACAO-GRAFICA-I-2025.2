@@ -17,7 +17,7 @@ typedef struct Camera{
     double ymax;
 
     Camera(double wJan, double hjan, Ponto posicao = Ponto(0,0,0), 
-            Vt U = Vt(1,0,0), Vt V = Vt(0,1,0), Vt W = Vt(0,0, 1),
+            Vt U = Vt(1,0,0), Vt V = Vt(0,1,0), Vt W = Vt(0,0,-1),
             double fovY = 60){
         this->posicao = posicao;
         this->d = 0.3; //Vamos deixar essa distancia por padrão 
@@ -92,16 +92,16 @@ typedef struct Camera{
 
 
     void LookAt( Ponto Alvo, Vt up = Vt(0,1,0)){
-        this->W = Alvo - this->posicao;
+        this->W = this->posicao - Alvo;
         this->W.normaliza();
 
         if(abs(this->W.ProdEsc(up)) >0.999)
             up = Vt(0,0,1);
         
-        this->U = this->W.prodVet(up);
+        this->U = W.prodVet(up);
         this->U.normaliza();
 
-        this->V = this->U.prodVet(this->W);
+       this->V = U.prodVet(W);
         
     }
 

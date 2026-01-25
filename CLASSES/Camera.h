@@ -17,7 +17,7 @@ typedef struct Camera{
     double ymax;
 
     Camera(double wJan, double hjan, Ponto posicao = Ponto(0,0,0), 
-            Vt U = Vt(1,0,0), Vt V = Vt(0,1,0), Vt W = Vt(0,0,-1),
+            Vt U = Vt(1,0,0), Vt V = Vt(0,1,0), Vt W = Vt(0,0, 1),
             double fovY = 60){
         this->posicao = posicao;
         this->d = 0.3; //Vamos deixar essa distancia por padrão 

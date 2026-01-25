@@ -5,6 +5,7 @@
 #include "../../CLASSES/Janela.h"
 #include "../../CLASSES/Vetores.h"
 #include "../../CLASSES/Objeto.h"
+#include "Plano.h"
 
 
 using namespace std;
@@ -15,6 +16,8 @@ struct Cilindro : Objeto{
     double hCil;
     Ponto Cbase;
     Vt dCil;
+    bool temBase;
+    bool temTampa;
 
     Cilindro(int id, double raio, double alt, Ponto centro, Vt d){
         this->id = id;
@@ -27,6 +30,8 @@ struct Cilindro : Objeto{
         kamb = {0, 0, 0};
         m = 0;
         usaText = false;
+        temBase = true;
+        temTampa = true;
     }
 
     Vt normal(Ponto &pI){
@@ -39,7 +44,31 @@ struct Cilindro : Objeto{
     }
 
     bool intersecta(Ponto &O, Ponto &P){
-        Vt D = P -O; D.normaliza();
+        Vt D = P-O; D.normaliza();
+        if(temBase){
+            Plano p = Plano(Cbase, dCil);
+            if(p.intersecta(O, P)){
+                Ponto pI = O.pontoIntersecao(p.t, D);
+                Vt v = pI - Cbase;
+                double dist = v.ProdEsc(v);
+                if(dist<= r*r){
+                    t = p.t;
+                    return true;
+                }
+            }
+        }
+        if(temTampa){
+            Plano p2 = Plano(Cbase+(dCil*hCil), dCil);
+            if(p2.intersecta(O, P)){
+                Ponto pI = O.pontoIntersecao(p2.t, D);
+                Vt v = pI - Cbase;
+                double dist = v.ProdEsc(v);
+                if(dist<= r*r){
+                    t = p2.t;
+                    return true;
+                }
+            }
+        }
         Vt d = O - Cbase;
         Vt dr = Vt(D.x - (D.ProdEsc(dCil)*dCil.x), D.y - (dCil.y*D.ProdEsc(dCil)), D.z - (dCil.z*D.ProdEsc(dCil)));
         Vt w = Vt(d.x - (dCil.x*d.ProdEsc(dCil)), d.y - (dCil.y*d.ProdEsc(dCil)), d.z - (dCil.z*d.ProdEsc(dCil)));

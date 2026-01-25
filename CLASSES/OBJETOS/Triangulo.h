@@ -12,6 +12,7 @@ struct Triangulo : Objeto{
     Ponto P2;
 
     Triangulo(Ponto p1, Ponto p2, Ponto p0){
+        id = -2;
         P0 = p0;
         P1 = p1;
         P2 = p2;

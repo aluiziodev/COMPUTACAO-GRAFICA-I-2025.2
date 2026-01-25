@@ -46,7 +46,7 @@ int main(){
     int nCol = 500;
 
 
-    Camera Cam(500, 500);
+    Camera Cam(500, 500, Pt(0.0, 0.8, 0.0));
     
 
     // PLANO 1 (CHAO)
@@ -168,7 +168,6 @@ int main(){
  
     LuzPontual LuzP2(I_F2, P_F2);
     
-    Cam.posicao = Ponto(.0, 0.0, .0);
    
 
     LuzDirecional LuzP3(I_F, Vt(0.0, -1.0, .0));

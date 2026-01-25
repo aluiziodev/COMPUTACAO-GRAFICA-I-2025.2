@@ -45,6 +45,8 @@ struct Cilindro : Objeto{
 
     bool intersecta(Ponto &O, Ponto &P){
         Vt D = P-O; D.normaliza();
+        double tBase = 1e9;
+        bool hitBase = false;
         if(temBase){
             Plano p = Plano(Cbase, dCil);
             if(p.intersecta(O, P)){
@@ -52,23 +54,29 @@ struct Cilindro : Objeto{
                 Vt v = pI - Cbase;
                 double dist = v.ProdEsc(v);
                 if(dist<= r*r){
-                    t = p.t;
-                    return true;
+                    tBase = p.t;
+                    hitBase = true;
                 }
             }
         }
+        double tTampa = 1e9;
+        bool hitTampa = false;
         if(temTampa){
-            Plano p2 = Plano(Cbase+(dCil*hCil), dCil);
+            Ponto cTampa = Cbase+(dCil*hCil);
+            Plano p2 = Plano(cTampa, dCil);
             if(p2.intersecta(O, P)){
                 Ponto pI = O.pontoIntersecao(p2.t, D);
-                Vt v = pI - Cbase;
+                Vt v = pI - cTampa;
                 double dist = v.ProdEsc(v);
                 if(dist<= r*r){
-                    t = p2.t;
-                    return true;
+                    tTampa = p2.t;
+                    hitTampa = true;
+                    
                 }
             }
         }
+        double tCasca = 1e9;
+        bool hitCasca = true;
         Vt d = O - Cbase;
         Vt dr = Vt(D.x - (D.ProdEsc(dCil)*dCil.x), D.y - (dCil.y*D.ProdEsc(dCil)), D.z - (dCil.z*D.ProdEsc(dCil)));
         Vt w = Vt(d.x - (dCil.x*d.ProdEsc(dCil)), d.y - (dCil.y*d.ProdEsc(dCil)), d.z - (dCil.z*d.ProdEsc(dCil)));
@@ -78,23 +86,27 @@ struct Cilindro : Objeto{
         double c = w.ProdEsc(w) - r*r;
 
         double dlt = b*b - (4*a*c);
-        if(dlt<0) return false;
+        if(dlt<0) hitCasca = false;
 
         double t1 = (-b - sqrt(dlt))/(2*a);
         double t2 = (-b + sqrt(dlt))/(2*a);
 
         
-        if(t1<= 1e-6 && t2<=1e-6) return false;
-        else if(t1>1e-6 && t2<=1e-6) t = t1;
-        else if(t1<=1e-6 && t2>1e-6) t = t2;
-        else t = min(t1, t2);
+        if(t1<= 1e-6 && t2<=1e-6) hitCasca = false;
+        else if(t1>1e-6 && t2<=1e-6) tCasca = t1;
+        else if(t1<=1e-6 && t2>1e-6) tCasca = t2;
+        else tCasca = min(t1, t2);
 
-        Ponto pI= O.pontoIntersecao(t, D);
+        Ponto pI= O.pontoIntersecao(tCasca, D);
         double h = (pI - Cbase).ProdEsc(dCil);
-        if(h<0 || h>hCil) return false;
+        if(h<0 || h>hCil) hitCasca = false;
 
+        if(hitBase || hitCasca || hitTampa){ 
+            t = min(tCasca, min(tBase, tTampa));
+            return true;
+        }
 
-        return true;
+        return false;
 
     }
 

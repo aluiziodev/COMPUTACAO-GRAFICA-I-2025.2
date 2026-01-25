@@ -43,6 +43,8 @@ struct Cone : Objeto{
 
     bool intersecta(Ponto &O, Ponto &P) {
         Vt D = P-O; D.normaliza();
+        double tBase = 1e9;
+        bool hitBase = false;
         if(temBase){
             Plano p = Plano(Cbase, dCone);
             if(p.intersecta(O, P)){
@@ -50,11 +52,13 @@ struct Cone : Objeto{
                 Vt v = pI - Cbase;
                 double dist = v.ProdEsc(v);
                 if(dist<= r*r){
-                    t = p.t;
-                    return true;
+                    tBase = p.t;
+                    hitBase = true;
                 }
             }
         }
+        double tCasca = 1e9;
+        bool hitCasca = true;
         Ponto cTopo = Cbase.pontoIntersecao(hCone, dCone);
         Vt co = O - cTopo;
         double k = r/hCone;
@@ -68,26 +72,31 @@ struct Cone : Objeto{
         double c = coPerp.ProdEsc(coPerp) - (k*k) * (cov*cov);
 
         double delta = b*b - 4*a*c;
-        if (delta < 0 || fabs(a) < 1e-6) return false;
+        if (delta < 0 || fabs(a) < 1e-6) hitCasca = false;
 
         double t1 = (-b - sqrt(delta)) / (2*a);
         double t2 = (-b + sqrt(delta)) / (2*a);
 
         
-        if (t1 <= 1e-6 && t2 <= 1e-6) return false;
-        else if (t1 > 1e-6 && t2 <= 1e-6) t = t1;
-        else if (t1 <= 1e-6 && t2 > 1e-6) t = t2;
-        else t = min(t1, t2);
+        if (t1 <= 1e-6 && t2 <= 1e-6) hitCasca = false;
+        else if (t1 > 1e-6 && t2 <= 1e-6) tCasca = t1;
+        else if (t1 <= 1e-6 && t2 > 1e-6) tCasca = t2;
+        else tCasca = min(t1, t2);
 
 
 
-        Ponto pI = O.pontoIntersecao(t,D);
+        Ponto pI = O.pontoIntersecao(tCasca,D);
         double h = (pI - Cbase).ProdEsc(dCone);
 
-        if (h < 0 || h > hCone) return false;
+        if (h < 0 || h > hCone) hitCasca = false;
+
+        if(hitBase || hitCasca){
+            t = min(tBase, tCasca);
+            return true;
+        }
 
         
-        return true;
+        return false;
     }
 
    RGB pintaTextura(const Luz &l, Ponto &O, Ponto &P){

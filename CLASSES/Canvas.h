@@ -65,7 +65,7 @@ typedef struct Canvas{
                             Vt D = P - cam->posicao; D.normaliza();
 
                             Ponto pI= cam->posicao.pontoIntersecao(obj->t, D);
-                            // cone.temBase = true;
+
                             RGB cor(0,0,0);
 
                             cor = obj->kamb.arroba(iA);
@@ -80,7 +80,6 @@ typedef struct Canvas{
                                     cor += obj->pinta(*L, cam->posicao, P);
                                 }
                             }
-                            // cone.temBase = false;
                             corFinal = cor;
                             
                         }

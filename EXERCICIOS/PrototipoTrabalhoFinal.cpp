@@ -40,7 +40,12 @@ int main(){
     int nLin = 500;
     int nCol = 500;
 
-    Camera Cam(500, 500, Pt(12.5, 5, 0.0));
+    Camera Cam(500, 500, Pt(25.0, 25.0, 0.0));
+
+    Cam.LookAt(Pt(25.0, 0.0, 40.0));
+
+    Cam.zoomOut(2);
+
 
 
 
@@ -58,6 +63,15 @@ int main(){
     pChao.m = 1;
     cena.push_back(&pChao);
 
+    //PLANO 2 (PAREDE LATERAL)
+
+    Plano pLat(Pt(0.0, 1.0, 1.0), Vt(1.0, 0.0, 0.0));
+    pLat.kdif = RGB(0.329, 0.608, 0.922);
+    pLat.kesp = RGB(0.329, 0.608, 0.922);
+    pLat.kamb = RGB(0.329, 0.608, 0.922);
+    pLat.m = 1;
+    cena.push_back(&pLat);
+
 
 
     //PLANO 3 (PAREDE FRONTAL)
@@ -70,15 +84,6 @@ int main(){
     cena.push_back(&pFront);
 
 
-
-    //PLANO 5 (TETO)
-/*
-    Plano pTeto(Pt(0.0, 50.0, 0.0), Vt(0.0, -1.0, 0.0));
-    pTeto.kdif = RGB(0.529, 0.808, 0.922);
-    pTeto.kesp = RGB(0.529, 0.808, 0.922);
-    pTeto.kamb = RGB(0.529, 0.808, 0.922);
-    pTeto.m = 1;
-    cena.push_back(&pTeto); */
 
 
     //ESFERA 1 CORPO SNOWMAN
@@ -150,8 +155,7 @@ int main(){
     cilindro3.kdif = RGB(1., 0.008, 0.006);
     cilindro3.kesp = RGB(1., 0.008, 0.006);
     cilindro3.kamb = RGB(1., 0.008, 0.006);
-    cilindro3.temBase = false;
-    cilindro3.temTampa = false;
+
     cilindro3.m = 1;
     cena.push_back(&cilindro3);
     
@@ -199,83 +203,307 @@ int main(){
     cena.push_back(&cilindro5);
 
 
-    //CILINDRO 6 POSTE DE LUZ
-    Cilindro cilindro6(13, 0.2, 12, Pt(18, 0, 17.0), Vt(0, 1, 0.0));
-    cilindro6.kdif = RGB(0.4, 0.4, 0.4);
-    cilindro6.kesp = RGB(0.4, 0.4, 0.4);
-    cilindro6.kamb = RGB(0.4, 0.4, 0.4);
-    cilindro6.m = 5;
-    cena.push_back(&cilindro6);
-
-    //CILINDRO 7 LUMINARIA DO POSTE
-    Cilindro cilindro7(14, 0.2, 4, Pt(18, 11.8, 17.0), Vt(-1.0, 0.0, 0.0));
-    cilindro7.kdif = RGB(0.4, 0.4, 0.4);
-    cilindro7.kesp = RGB(0.4, 0.4, 0.4);
-    cilindro7.kamb = RGB(0.4, 0.4, 0.4);
-    cilindro7.m = 5;
-    cilindro7.temTampa = true;
-    cilindro7.temBase = true;
-    cena.push_back(&cilindro7);
-
-
-    //ESFERA 8 LAMPADA DO POSTE
-    Esfera esfera8(15, 0.35, Pt(14.1, 11.58, 17.0));
-    esfera8.kdif = RGB(1.0, 1.0, 0.8);
-    esfera8.kesp = RGB(1.0, 1.0, 0.8);
-    esfera8.kamb = RGB(1.0, 1.0, 0.8);
-    esfera8.m = 0.5;
-    cena.push_back(&esfera8);
-
-
-    //CILINDRO 8 BASE DO POSTE
-    Cilindro cilindro8(16, 0.9, 2, Pt(18, 0, 17.0), Vt(0, 1, 0.0));
-    cilindro8.temTampa = true;
-    cilindro8.temBase = true;
-    cilindro8.kdif = RGB(0.4, 0.4, 0.4);
-    cilindro8.kesp = RGB(0.4, 0.4, 0.4);
-    cilindro8.kamb = RGB(0.4, 0.4, 0.4);
-    cilindro8.m = 5;
-    cena.push_back(&cilindro8);
+    //POSTE DE LUZ
+    Cilindro poste(13, 0.2, 12, Pt(18, 0, 17.0), Vt(0, 1, 0.0));
+    poste.kdif = RGB(0.4, 0.4, 0.4);
+    poste.kesp = RGB(0.4, 0.4, 0.4);
+    poste.kamb = RGB(0.4, 0.4, 0.4);
+    poste.m = 5;
+    cena.push_back(&poste);
+    //LUMINARIA DO POSTE
+    Cilindro luminaria(14, 0.2, 4, Pt(18, 11.8, 17.0), Vt(-1.0, 0.0, 0.0));
+    luminaria.kdif = RGB(0.4, 0.4, 0.4);
+    luminaria.kesp = RGB(0.4, 0.4, 0.4);
+    luminaria.kamb = RGB(0.4, 0.4, 0.4);
+    luminaria.m = 5;
+    cena.push_back(&luminaria);
+    //LAMPADA DO POSTE
+    Esfera lampadaPoste(15, 0.35, Pt(14.1, 11.58, 17.0));
+    lampadaPoste.kdif = RGB(1.0, 1.0, 0.8);
+    lampadaPoste.kesp = RGB(1.0, 1.0, 0.8);
+    lampadaPoste.kamb = RGB(1.0, 1.0, 0.8);
+    lampadaPoste.m = 0.5;
+    cena.push_back(&lampadaPoste);
+    //BASE DO POSTE
+    Cilindro basePoste(16, 0.9, 2, Pt(18, 0, 17.0), Vt(0, 1, 0.0));
+    basePoste.kdif = RGB(0.4, 0.4, 0.4);
+    basePoste.kesp = RGB(0.4, 0.4, 0.4);
+    basePoste.kamb = RGB(0.4, 0.4, 0.4);
+    basePoste.m = 5;
+    cena.push_back(&basePoste);
+    Matriz transladaPoste = Transformacoes::transladar(24, 0, 15);
+    poste.aplicaTransformacao(transladaPoste);
+    luminaria.aplicaTransformacao(transladaPoste);
+    lampadaPoste.aplicaTransformacao(transladaPoste);
+    basePoste.aplicaTransformacao(transladaPoste);
 
 
-    //CILINDRO 9 TRONCO ARVORE
-    Cilindro cilindro9(17, 0.3, 4, Pt(14, 0, 23.0), Vt(0, 1, 0.0));
-    cilindro9.kdif = RGB(0.545, 0.271, 0.075);
-    cilindro9.kesp = RGB(0.545, 0.271, 0.075);
-    cilindro9.kamb = RGB(0.545, 0.271, 0.075);
-    cilindro9.m = 5;
-    cena.push_back(&cilindro9);
 
-    //ESFERA 9 FOLHAS ARVORE
-    Esfera esfera9(18, 5, Pt(14, 8.5, 23.0));
-    esfera9.kdif = RGB(0.0, 0.5, 0.0);
-    esfera9.kesp = RGB(0.0, 0.5, 0.0);
-    esfera9.kamb = RGB(0.0, 0.5, 0.0);
-    esfera9.m = 5;
-    cena.push_back(&esfera9);
+    //POSTE DE LUZ 2
+    Cilindro poste2(13, 0.2, 12, Pt(18, 0, 17.0), Vt(0, 1, 0.0));
+    poste2.kdif = RGB(0.4, 0.4, 0.4);
+    poste2.kesp = RGB(0.4, 0.4, 0.4);
+    poste2.kamb = RGB(0.4, 0.4, 0.4);
+    poste2.m = 5;
+    cena.push_back(&poste2);
+    //LUMINARIA DO POSTE 2
+    Cilindro luminaria2(14, 0.2, 4, Pt(18, 11.8, 17.0), Vt(-1.0, 0.0, 0.0));
+    luminaria2.kdif = RGB(0.4, 0.4, 0.4);
+    luminaria2.kesp = RGB(0.4, 0.4, 0.4);
+    luminaria2.kamb = RGB(0.4, 0.4, 0.4);
+    luminaria2.m = 5;
+    cena.push_back(&luminaria2);
+    //LAMPADA DO POSTE 2
+    Esfera lampadaPoste2(15, 0.35, Pt(14.1, 11.58, 17.0));
+    lampadaPoste2.kdif = RGB(1.0, 1.0, 0.8);
+    lampadaPoste2.kesp = RGB(1.0, 1.0, 0.8);
+    lampadaPoste2.kamb = RGB(1.0, 1.0, 0.8);
+    lampadaPoste2.m = 0.5;
+    cena.push_back(&lampadaPoste2);
+    //BASE DO POSTE 2
+    Cilindro basePoste2(16, 0.9, 2, Pt(18, 0, 17.0), Vt(0, 1, 0.0));
+    basePoste2.kdif = RGB(0.4, 0.4, 0.4);
+    basePoste2.kesp = RGB(0.4, 0.4, 0.4);
+    basePoste2.kamb = RGB(0.4, 0.4, 0.4);
+    basePoste2.m = 5;
+    cena.push_back(&basePoste2);
+    Matriz transladaOrigem = Transformacoes::transladar(-18, 0, -17);
+    Matriz transladaPoste2 = Transformacoes::transladar(15, 0, 32);
+    Matriz rotY = Transformacoes::rotacaoY(180);
+    poste2.aplicaTransformacao(transladaOrigem);
+    luminaria2.aplicaTransformacao(transladaOrigem);
+    lampadaPoste2.aplicaTransformacao(transladaOrigem);
+    basePoste2.aplicaTransformacao(transladaOrigem);
+    poste2.aplicaTransformacao(rotY);
+    luminaria2.aplicaTransformacao(rotY);
+    lampadaPoste2.aplicaTransformacao(rotY);
+    basePoste2.aplicaTransformacao(rotY);
+    poste2.aplicaTransformacao(transladaPoste2);
+    luminaria2.aplicaTransformacao(transladaPoste2);
+    lampadaPoste2.aplicaTransformacao(transladaPoste2);
+    basePoste2.aplicaTransformacao(transladaPoste2);
 
-    //ESFERA 10 FOLHAS ARVORE
-    Esfera esfera10(19, 4, Pt(13.8, 13.5, 23.0));
-    esfera10.kdif = RGB(0.0, 0.5, 0.0);
-    esfera10.kesp = RGB(0.0, 0.5, 0.0);
-    esfera10.kamb = RGB(0.0, 0.5, 0.0);
-    esfera10.m = 10;
-    cena.push_back(&esfera10);
+
+
+    //POSTE DE LUZ 3
+    Cilindro poste3(13, 0.2, 12, Pt(18, 0, 17.0), Vt(0, 1, 0.0));
+    poste3.kdif = RGB(0.4, 0.4, 0.4);
+    poste3.kesp = RGB(0.4, 0.4, 0.4);
+    poste3.kamb = RGB(0.4, 0.4, 0.4);
+    poste3.m = 5;
+    cena.push_back(&poste3);
+    //LUMINARIA DO POSTE
+    Cilindro luminaria3(14, 0.2, 4, Pt(18, 11.8, 17.0), Vt(-1.0, 0.0, 0.0));
+    luminaria3.kdif = RGB(0.4, 0.4, 0.4);
+    luminaria3.kesp = RGB(0.4, 0.4, 0.4);
+    luminaria3.kamb = RGB(0.4, 0.4, 0.4);
+    luminaria3.m = 5;
+    cena.push_back(&luminaria3);
+    //LAMPADA DO POSTE 3
+    Esfera lampadaPoste3(15, 0.35, Pt(14.1, 11.58, 17.0));
+    lampadaPoste3.kdif = RGB(1.0, 1.0, 0.8);
+    lampadaPoste3.kesp = RGB(1.0, 1.0, 0.8);
+    lampadaPoste3.kamb = RGB(1.0, 1.0, 0.8);
+    lampadaPoste3.m = 0.5;
+    cena.push_back(&lampadaPoste3);
+    //CBASE DO POSTE 3
+    Cilindro basePoste3(16, 0.9, 2, Pt(18, 0, 17.0), Vt(0, 1, 0.0));
+    basePoste3.kdif = RGB(0.4, 0.4, 0.4);
+    basePoste3.kesp = RGB(0.4, 0.4, 0.4);
+    basePoste3.kamb = RGB(0.4, 0.4, 0.4);
+    basePoste3.m = 5;
+    cena.push_back(&basePoste3);
+    Matriz transladaPoste3 = Transformacoes::transladar(24, 0, -3);
+    poste3.aplicaTransformacao(transladaPoste3);
+    luminaria3.aplicaTransformacao(transladaPoste3);
+    lampadaPoste3.aplicaTransformacao(transladaPoste3);
+    basePoste3.aplicaTransformacao(transladaPoste3);
+
+
+
+    //POSTE DE LUZ 4
+    Cilindro poste4(13, 0.2, 12, Pt(18, 0, 17.0), Vt(0, 1, 0.0));
+    poste4.kdif = RGB(0.4, 0.4, 0.4);
+    poste4.kesp = RGB(0.4, 0.4, 0.4);
+    poste4.kamb = RGB(0.4, 0.4, 0.4);
+    poste4.m = 5;
+    cena.push_back(&poste4);
+    //LUMINARIA DO POSTE 4
+    Cilindro luminaria4(14, 0.2, 4, Pt(18, 11.8, 17.0), Vt(-1.0, 0.0, 0.0));
+    luminaria4.kdif = RGB(0.4, 0.4, 0.4);
+    luminaria4.kesp = RGB(0.4, 0.4, 0.4);
+    luminaria4.kamb = RGB(0.4, 0.4, 0.4);
+    luminaria4.m = 5;
+    cena.push_back(&luminaria4);
+    //LAMPADA DO POSTE 4
+    Esfera lampadaPoste4(15, 0.35, Pt(14.1, 11.58, 17.0));
+    lampadaPoste4.kdif = RGB(1.0, 1.0, 0.8);
+    lampadaPoste4.kesp = RGB(1.0, 1.0, 0.8);
+    lampadaPoste4.kamb = RGB(1.0, 1.0, 0.8);
+    lampadaPoste4.m = 0.5;
+    cena.push_back(&lampadaPoste4);
+    //BASE DO POSTE 4
+    Cilindro basePoste4(16, 0.9, 2, Pt(18, 0, 17.0), Vt(0, 1, 0.0));
+    basePoste4.kdif = RGB(0.4, 0.4, 0.4);
+    basePoste4.kesp = RGB(0.4, 0.4, 0.4);
+    basePoste4.kamb = RGB(0.4, 0.4, 0.4);
+    basePoste4.m = 5;
+    cena.push_back(&basePoste4);
+    Matriz transladaPoste4 = Transformacoes::transladar(15, 0, 14);
+    poste4.aplicaTransformacao(transladaOrigem);
+    luminaria4.aplicaTransformacao(transladaOrigem);
+    lampadaPoste4.aplicaTransformacao(transladaOrigem);
+    basePoste4.aplicaTransformacao(transladaOrigem);
+    poste4.aplicaTransformacao(rotY);
+    luminaria4.aplicaTransformacao(rotY);
+    lampadaPoste4.aplicaTransformacao(rotY);
+    basePoste4.aplicaTransformacao(rotY);
+    poste4.aplicaTransformacao(transladaPoste4);
+    luminaria4.aplicaTransformacao(transladaPoste4);
+    lampadaPoste4.aplicaTransformacao(transladaPoste4);
+    basePoste4.aplicaTransformacao(transladaPoste4);
+
+
+
+
+    //CILINDRO TRONCO ARVORE
+    Cilindro tronco(17, 0.3, 4, Pt(14, 0, 23.0), Vt(0, 1, 0.0));
+    tronco.kdif = RGB(0.545, 0.271, 0.075);
+    tronco.kesp = RGB(0.545, 0.271, 0.075);
+    tronco.kamb = RGB(0.545, 0.271, 0.075);
+    tronco.m = 5;
+    cena.push_back(&tronco);
+    //ESFERA FOLHAS ARVORE INF
+    Esfera folhasInf(18, 5, Pt(14, 8.5, 23.0));
+    folhasInf.kdif = RGB(0.0, 0.5, 0.0);
+    folhasInf.kesp = RGB(0.0, 0.5, 0.0);
+    folhasInf.kamb = RGB(0.0, 0.5, 0.0);
+    folhasInf.m = 5;
+    cena.push_back(&folhasInf);
+    //ESFERA FOLHAS ARVORE SUP
+    Esfera folhasSup(19, 4, Pt(13.8, 13.5, 23.0));
+    folhasSup.kdif = RGB(0.0, 0.5, 0.0);
+    folhasSup.kesp = RGB(0.0, 0.5, 0.0);
+    folhasSup.kamb = RGB(0.0, 0.5, 0.0);
+    folhasSup.m = 10;
+    cena.push_back(&folhasSup);
+    Matriz transladaArv = Transformacoes::transladar(5, 0, 20);
+    tronco.aplicaTransformacao(transladaArv);
+    folhasInf.aplicaTransformacao(transladaArv);
+    folhasSup.aplicaTransformacao(transladaArv);
+
+
+    //CILINDRO TRONCO ARVORE 2
+    Cilindro tronco2(17, 0.3, 4, Pt(14, 0, 23.0), Vt(0, 1, 0.0));
+    tronco2.kdif = RGB(0.545, 0.271, 0.075);
+    tronco2.kesp = RGB(0.545, 0.271, 0.075);
+    tronco2.kamb = RGB(0.545, 0.271, 0.075);
+    tronco2.m = 5;
+    cena.push_back(&tronco2);
+    //ESFERA FOLHAS ARVORE INF 2
+    Esfera folhasInf2(18, 5, Pt(14, 8.5, 23.0));
+    folhasInf2.kdif = RGB(0.0, 0.5, 0.0);
+    folhasInf2.kesp = RGB(0.0, 0.5, 0.0);
+    folhasInf2.kamb = RGB(0.0, 0.5, 0.0);
+    folhasInf2.m = 5;
+    cena.push_back(&folhasInf2);
+    //ESFERA FOLHAS ARVORE SUP 2
+    Esfera folhasSup2(19, 4, Pt(13.8, 13.5, 23.0));
+    folhasSup2.kdif = RGB(0.0, 0.5, 0.0);
+    folhasSup2.kesp = RGB(0.0, 0.5, 0.0);
+    folhasSup2.kamb = RGB(0.0, 0.5, 0.0);
+    folhasSup2.m = 10;
+    cena.push_back(&folhasSup2);
+    Matriz transladaArv2 = Transformacoes::transladar(24, 0, 20);
+    tronco2.aplicaTransformacao(transladaArv2);
+    folhasInf2.aplicaTransformacao(transladaArv2);
+    folhasSup2.aplicaTransformacao(transladaArv2);
+
+
+
+    //CILINDRO TRONCO ARVORE 3
+    Cilindro tronco3(17, 0.3, 4, Pt(14, 0, 23.0), Vt(0, 1, 0.0));
+    tronco3.kdif = RGB(0.545, 0.271, 0.075);
+    tronco3.kesp = RGB(0.545, 0.271, 0.075);
+    tronco3.kamb = RGB(0.545, 0.271, 0.075);
+    tronco3.m = 5;
+    cena.push_back(&tronco3);
+    //ESFERA FOLHAS ARVORE INF 3
+    Esfera folhasInf3(18, 5, Pt(14, 8.5, 23.0));
+    folhasInf3.kdif = RGB(0.0, 0.5, 0.0);
+    folhasInf3.kesp = RGB(0.0, 0.5, 0.0);
+    folhasInf3.kamb = RGB(0.0, 0.5, 0.0);
+    folhasInf3.m = 5;
+    cena.push_back(&folhasInf3);
+    //ESFERA FOLHAS ARVORE SUP 3
+    Esfera folhasSup3(19, 4, Pt(13.8, 13.5, 23.0));
+    folhasSup3.kdif = RGB(0.0, 0.5, 0.0);
+    folhasSup3.kesp = RGB(0.0, 0.5, 0.0);
+    folhasSup3.kamb = RGB(0.0, 0.5, 0.0);
+    folhasSup3.m = 10;
+    cena.push_back(&folhasSup3);
+    Matriz transladaArv3 = Transformacoes::transladar(38, 0, 15);
+    tronco3.aplicaTransformacao(transladaArv3);
+    folhasInf3.aplicaTransformacao(transladaArv3);
+    folhasSup3.aplicaTransformacao(transladaArv3);
+
+
+
+    //CILINDRO TRONCO ARVORE
+    Cilindro tronco4(17, 0.3, 4, Pt(14, 0, 23.0), Vt(0, 1, 0.0));
+    tronco4.kdif = RGB(0.545, 0.271, 0.075);
+    tronco4.kesp = RGB(0.545, 0.271, 0.075);
+    tronco4.kamb = RGB(0.545, 0.271, 0.075);
+    tronco4.m = 5;
+    cena.push_back(&tronco4);
+    //ESFERA FOLHAS ARVORE INF
+    Esfera folhasInf4(18, 5, Pt(14, 8.5, 23.0));
+    folhasInf4.kdif = RGB(0.0, 0.5, 0.0);
+    folhasInf4.kesp = RGB(0.0, 0.5, 0.0);
+    folhasInf4.kamb = RGB(0.0, 0.5, 0.0);
+    folhasInf4.m = 5;
+    cena.push_back(&folhasInf4);
+    //ESFERA FOLHAS ARVORE SUP
+    Esfera folhasSup4(19, 4, Pt(13.8, 13.5, 23.0));
+    folhasSup4.kdif = RGB(0.0, 0.5, 0.0);
+    folhasSup4.kesp = RGB(0.0, 0.5, 0.0);
+    folhasSup4.kamb = RGB(0.0, 0.5, 0.0);
+    folhasSup4.m = 10;
+    cena.push_back(&folhasSup4);
+    Matriz transladaArv4 = Transformacoes::transladar(-7, 0, 10);
+    tronco4.aplicaTransformacao(transladaArv4);
+    folhasInf4.aplicaTransformacao(transladaArv4);
+    folhasSup4.aplicaTransformacao(transladaArv4);
+
+
     
-    Matriz transladaArv = Transformacoes::transladar(4, 0, 2);
-    cilindro9.aplicaTransformacao(transladaArv);
-    esfera9.aplicaTransformacao(transladaArv);
-    esfera10.aplicaTransformacao(transladaArv);
 
-    RGB iF(0.5,0.5,0.75);
+    RGB iF(0.3,0.3,0.3);
+    //RGB iFd(0.5, 0.5, 0.7);
+    RGB iFp(0.3, 0.3, 0.5);
     RGB iA(0.2, 0.2, 0.2);
 
-    LuzSpot luzS(iF, Vt(0,-1,0), 30.0,  Pt(14.1, 11, 17.0));
-    luzS.apontarPara(esfera1.Cesf);
+    LuzSpot luzS(iF, Vt(0,-1,0), 40.0,  Pt(38.1, 11, 32.0));
+    luzS.apontarPara(Pt(35.1, 0, 32));
     luzes.push_back(&luzS);
 
-    LuzDirecional luzP(iF, Vt(-0.67, -0.67, 1.0));
-    luzes.push_back(&luzP);
+    LuzSpot luzS2(iF, Vt(0,-1,0), 40.0,  Pt(18.9, 11, 32.0));
+    luzS2.apontarPara(Pt(21.9, 0, 32));
+    luzes.push_back(&luzS2);
+
+    LuzSpot luzS3(iF, Vt(0,-1,0), 40.0,  Pt(38.1, 11, 14.0));
+    luzS3.apontarPara(Pt(35.1, 0, 14));
+    luzes.push_back(&luzS3);
+
+    LuzSpot luzS4(iF, Vt(0,-1,0), 40.0,  Pt(18.9, 11, 14.0));
+    luzS4.apontarPara(Pt(21.9, 0, 14.0));
+    luzes.push_back(&luzS4);
+
+    //LuzDirecional luzP(iFd, Vt(-0.67, -0.67, 1.0));
+    //luzes.push_back(&luzP);
+
+    LuzPontual LuzPont(iFp, Pt(0.1, 80.0, 59.9));
+    luzes.push_back(&LuzPont);
 
     Canvas canvas(nCol, nLin, &Cam, iA);
 
@@ -285,6 +513,7 @@ int main(){
     for(Luz* luz : luzes){
         canvas.adicionarLuz(luz);
     }
+
 
      canvas.GeraImg("prototipo.ppm");
      cout << "concluido \n";

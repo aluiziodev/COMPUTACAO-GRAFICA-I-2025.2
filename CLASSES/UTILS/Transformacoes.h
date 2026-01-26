@@ -130,6 +130,26 @@ public:
 
         return m;
     }
+
+    static Matriz EspelhoPlano(Vt n) {
+        n.normaliza();
+        float nx = n.x, ny = n.y, nz = n.z;
+
+        Matriz m;
+        m(0,0) = 1 - 2*nx*nx;
+        m(0,1) = -2*nx*ny;
+        m(0,2) = -2*nx*nz;
+
+        m(1,0) = -2*ny*nx;
+        m(1,1) = 1 - 2*ny*ny;
+        m(1,2) = -2*ny*nz;
+
+        m(2,0) = -2*nz*nx;
+        m(2,1) = -2*nz*ny;
+        m(2,2) = 1 - 2*nz*nz;
+
+        return m;
+    }
 };
 
 

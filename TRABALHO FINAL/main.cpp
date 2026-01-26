@@ -70,9 +70,26 @@ int main(int argc, char **argv){
 
     //-----------VISTA PERSPECTIVA--------------
 
-    Camera Cam(500, 500, Pt(28.0, 15.0, 0.0));
-    Cam.LookAt(Pt(26.0, 0, 20.0));
+    //Camera Cam(500, 500, Pt(28.0, 15.0, 0.0));
+    //Cam.LookAt(Pt(26.0, 0, 20.0));
+    //Cam.zoomOut(1.9);
+
+
+    // 1 ponto de fuga
+    Camera Cam(500, 500, Pt(28.0, 5.0, 0.0));
     Cam.zoomOut(1.9);
+
+    // 2 ponto de fuga
+    //Camera Cam(500, 500, Pt(38.0, 5.0, 0.0));
+    //Cam.girarDireitaEsquerda(-20);
+    //Cam.zoomOut(1.9);
+
+    // 3 ponto de fuga
+    //Camera Cam(500, 500, Pt(38.0, 20.0, 0.0));
+    //Cam.girarDireitaEsquerda(-20);
+    //Cam.girarCimaBaixo(25);
+    //Cam.zoomOut(1.9);
+
    
     //--------------VISTA OBLIQUA POR PADRAO É CABINET--------------
 
@@ -243,7 +260,7 @@ int main(int argc, char **argv){
     placa.aplicaTransformacao(espelho);
 
     RGB iF(0.25,0.25,0.25);
-    //RGB iFd(0.5, 0.5, 0.7);
+    RGB iFd(0.1, 0.1, 0.2);
     RGB iFp(0.35, 0.35, 0.55);
     RGB iA(0.19, 0.19, 0.24);
 
@@ -263,8 +280,8 @@ int main(int argc, char **argv){
     luzS4.apontarPara(Pt(21.9, 0, 14.0));
     luzes.push_back(&luzS4);
 
-    //LuzDirecional luzP(iFd, Vt(-0.67, -0.67, 1.0));
-    //luzes.push_back(&luzP);
+    LuzDirecional luzDir(iFd, Vt(-0.67, -0.67, 1.0));
+    luzes.push_back(&luzDir);
 
     LuzPontual LuzPont(iFp, Pt(70.0, 80.0, 0.1));
     luzes.push_back(&LuzPont);

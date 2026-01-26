@@ -42,14 +42,14 @@ int main(int argc, char **argv){
 
 
     int texW, texH, Canais;
-    unsigned char* textura_grama = stbi_load("../../TEXTURAS/paisagemNeve3.jpg", &texW, &texH, &Canais, 0);
+    unsigned char* textura_grama = stbi_load("../TEXTURAS/paisagemNeve3.jpg", &texW, &texH, &Canais, 0);
     if (!textura_grama) {
         cerr << "Erro ao carregar textura!\n";
         return -1;
     }
 
     int texW2, texH2, Canais2;
-    unsigned char* textura_grama2 = stbi_load("../../TEXTURAS/neve.jpg", &texW2, &texH2, &Canais2, 0);
+    unsigned char* textura_grama2 = stbi_load("../TEXTURAS/neve.jpg", &texW2, &texH2, &Canais2, 0);
     if (!textura_grama2) {
         cerr << "Erro ao carregar textura!\n";
         return -1;
@@ -57,7 +57,7 @@ int main(int argc, char **argv){
     
 
     int texW3, texH3, Canais3;
-    unsigned char* textura_grama3 = stbi_load("../../TEXTURAS/paisagemNeve3.jpg", &texW3, &texH3, &Canais3, 0);
+    unsigned char* textura_grama3 = stbi_load("../TEXTURAS/paisagemNeve3.jpg", &texW3, &texH3, &Canais3, 0);
     if (!textura_grama3) {
         cerr << "Erro ao carregar textura!\n";
         return -1;
@@ -76,24 +76,24 @@ int main(int argc, char **argv){
    
     //--------------VISTA OBLIQUA POR PADRAO É CABINET--------------
 
-    // Camera Cam(500, 500, Pt(38.0, 23.0, 0.0));
-    // Cam.obliqua = true;
-    // Cam.zoomOrtho(130);
+    //Camera Cam(500, 500, Pt(38.0, 23.0, 0.0));
+    //Cam.obliqua = true;
+    //Cam.zoomOrtho(130);
 
 
     // --------------VISTA OBLIQUA CAVALIER--------------
 
-    // Camera Cam(500, 500, Pt(38.0, 23.0, 0.0));
-    // Cam.obliqua = true;
-    // Cam.zoomOrtho(130);
-    // Cam.L = 1; //Cavalier
+    //Camera Cam(500, 500, Pt(38.0, 23.0, 0.0));
+    //Cam.obliqua = true;
+    //Cam.zoomOrtho(130);
+    //Cam.L = 1; //Cavalier
 
 
     //-------------- VISTA ORTOGRAFICA FRONTAL--------------
 
-    // Camera Cam(500, 500, Pt(27.0, 13.0, 0.0));
-    // Cam.ortografica = true;
-    // Cam.zoomOrtho(130);
+    //Camera Cam(500, 500, Pt(27.0, 13.0, 0.0));
+    //Cam.ortografica = true;
+    //Cam.zoomOrtho(130);
 
 
     //--------------VISTA ORTOGRAFICA LATERAL--------------

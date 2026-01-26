@@ -80,12 +80,12 @@ int main(int argc, char **argv){
     //Cam.LookAt(Pt(0,15.0,0), Vt(0,1, 0));
     //Cam.zoomOut(1.9);
 
-    // 2 ponto de fuga
+    // 2 pontos de fuga
     //Camera Cam(500, 500, Pt(38.0, 5.0, 0.0));
     //Cam.girarDireitaEsquerda(-20);
     //Cam.zoomOut(1.9);
 
-    //3 ponto de fuga
+    // 3 pontos de fuga
     Camera Cam(500, 500, Pt(38.0, 20.0, 0.0));
     Cam.LookAt(Pt(10, 0, 30));
     Cam.zoomOut(1.2);

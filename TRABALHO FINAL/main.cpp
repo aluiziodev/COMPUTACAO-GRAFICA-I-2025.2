@@ -27,6 +27,7 @@
 #include "OBJETOS/Arvore.h"
 #include "OBJETOS/Poste.h"
 #include "OBJETOS/Banco.h"
+#include "OBJETOS/placa.h"
 
 #define STB_IMAGE_IMPLEMENTATION
 #include "../LIBS/stb_image.h"
@@ -186,10 +187,10 @@ int main(int argc, char **argv){
     banco2.aplicaTransformacao(transladaBanco2);
     banco2.adicionaCena(cena);
 
-    
-
-
-    
+    Placa placa(13);
+    placa.adicionaCena(cena);
+    Matriz cis  = Transformacoes::cisalharXY(0.3, 0.0);
+    placa.aplicaTransformacao(cis);
 
     RGB iF(0.25,0.25,0.25);
     //RGB iFd(0.5, 0.5, 0.7);
@@ -227,7 +228,6 @@ int main(int argc, char **argv){
         canvas.adicionarLuz(luz);
     }
 
-    
     canvas.GeraImg("prototipo.ppm");
     cout << "imagem renderizada com sucesso \n";
 

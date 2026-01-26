@@ -22,8 +22,8 @@ struct Cilindro : Objeto{
     bool temBase;
     bool temTampa;
 
-    Cilindro(int id, double raio, double alt, Ponto centro, Vt d){
-        this->id = id;
+    Cilindro(string nome, double raio, double alt, Ponto centro, Vt d){
+        this->nome = nome;
         r = raio;
         Cbase = centro;
         hCil = alt;
@@ -51,7 +51,7 @@ struct Cilindro : Objeto{
         double tBase = 1e9;
         bool hitBase = false;
         if(temBase){
-            Plano p = Plano(Cbase, dCil);
+            Plano p = Plano(nome, Cbase, dCil);
             if(p.intersecta(O, P)){
                 Ponto pI = O.pontoIntersecao(p.t, D);
                 Vt v = pI - Cbase;
@@ -66,7 +66,7 @@ struct Cilindro : Objeto{
         bool hitTampa = false;
         if(temTampa){
             Ponto cTampa = Cbase+(dCil*hCil);
-            Plano p2 = Plano(cTampa, dCil);
+            Plano p2 = Plano(nome, cTampa, dCil);
             if(p2.intersecta(O, P)){
                 Ponto pI = O.pontoIntersecao(p2.t, D);
                 Vt v = pI - cTampa;

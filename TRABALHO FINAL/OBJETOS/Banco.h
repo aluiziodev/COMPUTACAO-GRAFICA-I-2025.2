@@ -19,8 +19,8 @@ using namespace std;
 struct Banco : ObjetoMulti{
 
 
-    Banco(int id){
-        this->id = id;
+    Banco(string nome){
+        this->nome = nome;
         this->componentes = vector<Objeto *>();
         //MALHA PARALELEPIPEDO
         double aresta = 2;
@@ -52,7 +52,7 @@ struct Banco : ObjetoMulti{
         vector<Triangulo> faces = { f0, f1, f2, f3, f4, f5, f6, f7, f8, f9, f10, f11};
 
         //PES DO BANCO
-        Malha *peBanco1 = new Malha(20, vertices, faces);
+        Malha *peBanco1 = new Malha(nome, vertices, faces);
         peBanco1->kdif = RGB(0.545, 0.271, 0.075);
         peBanco1->kesp = RGB(0.545, 0.271, 0.075);
         peBanco1->kamb = RGB(0.545, 0.271, 0.075);
@@ -60,7 +60,7 @@ struct Banco : ObjetoMulti{
         addComponente(*peBanco1);
         
 
-        Malha *peBanco2 = new Malha(21, vertices, faces);
+        Malha *peBanco2 = new Malha(nome, vertices, faces);
         peBanco2->kdif = RGB(0.545, 0.271, 0.075);
         peBanco2->kesp = RGB(0.545, 0.271, 0.075);
         peBanco2->kamb = RGB(0.545, 0.271, 0.075);
@@ -70,7 +70,7 @@ struct Banco : ObjetoMulti{
         addComponente(*peBanco2);
         
 
-        Malha *peBanco3 = new Malha(22, vertices, faces);
+        Malha *peBanco3 = new Malha(nome, vertices, faces);
         peBanco3->kdif = RGB(0.545, 0.271, 0.075);
         peBanco3->kesp = RGB(0.545, 0.271, 0.075);
         peBanco3->kamb = RGB(0.545, 0.271, 0.075);
@@ -80,7 +80,7 @@ struct Banco : ObjetoMulti{
         addComponente(*peBanco3);
         
 
-        Malha *peBanco4 = new Malha(23, vertices, faces);
+        Malha *peBanco4 = new Malha(nome, vertices, faces);
         peBanco4->kdif = RGB(0.545, 0.271, 0.075);
         peBanco4->kesp = RGB(0.545, 0.271, 0.075);
         peBanco4->kamb = RGB(0.545, 0.271, 0.075);
@@ -119,7 +119,7 @@ struct Banco : ObjetoMulti{
 
         vector<Triangulo> faces2 = { f12, f13, f14, f15, f16, f17, f18, f19, f20, f21, f22, f23};
 
-        Malha *assentoBanco = new Malha(22, vertices2, faces2);
+        Malha *assentoBanco = new Malha(nome, vertices2, faces2);
         assentoBanco->kdif = RGB(0.545, 0.271, 0.075);
         assentoBanco->kesp = RGB(0.545, 0.271, 0.075);
         assentoBanco->kamb = RGB(0.545, 0.271, 0.075);
@@ -128,7 +128,7 @@ struct Banco : ObjetoMulti{
         
 
         //ENCOSTO DO BANCO
-        Malha *encostoBanco = new Malha(22, vertices2, faces2);
+        Malha *encostoBanco = new Malha(nome, vertices2, faces2);
         encostoBanco->kdif = RGB(0.545, 0.271, 0.075);
         encostoBanco->kesp = RGB(0.545, 0.271, 0.075);
         encostoBanco->kamb = RGB(0.545, 0.271, 0.075);

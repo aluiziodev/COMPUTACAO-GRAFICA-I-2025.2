@@ -41,7 +41,7 @@ using namespace std;
 int main(int argc, char **argv){
 
     int texW2, texH2, Canais2;
-    unsigned char* textura_grama = stbi_load("../../TEXTURAS/neve.jpg", &texW2, &texH2, &Canais2, 0);
+    unsigned char* textura_grama = stbi_load("../TEXTURAS/neve.jpg", &texW2, &texH2, &Canais2, 0);
     if (!textura_grama) {
         cerr << "Erro ao carregar textura!\n";
         return -1;
@@ -67,7 +67,7 @@ int main(int argc, char **argv){
 
     // PLANO CHAO
 
-    Plano pChao(Pt(0, 0, 0), Vt(0, 1, 0));
+    Plano pChao("Chao", Pt(0, 0, 0), Vt(0, 1, 0));
     pChao.colocaText(textura_grama, texW2, texH2, Canais2);
     pChao.ud = Vt(1.0, 0.0, 0.0); 
     pChao.vd = Vt(0.0, 0.0, 1.0); 
@@ -76,7 +76,7 @@ int main(int argc, char **argv){
 
     //PLANO 2 (PAREDE LATERAL)
 
-    Plano pLat(Pt(0.0, 1.0, 1.0), Vt(1.0, 0.0, 0.0));
+    Plano pLat("Vista", Pt(0.0, 1.0, 1.0), Vt(1.0, 0.0, 0.0));
     pLat.kdif = RGB(0.329, 0.608, 0.922);
     pLat.kesp = RGB(0.329, 0.608, 0.922);
     pLat.kamb = RGB(0.329, 0.608, 0.922);
@@ -87,7 +87,7 @@ int main(int argc, char **argv){
 
     //PLANO 3 (PAREDE FRONTAL)
 
-    Plano pFront(Pt(1.0, 1.0, 60.0), Vt(0.0, 0.0, -1.0));
+    Plano pFront("Vista", Pt(1.0, 1.0, 60.0), Vt(0.0, 0.0, -1.0));
     pFront.kdif = RGB(0.329, 0.608, 0.922);
     pFront.kesp = RGB(0.329, 0.608, 0.922);
     pFront.kamb = RGB(0.329, 0.608, 0.922);
@@ -99,20 +99,20 @@ int main(int argc, char **argv){
     Matriz translacaoOrigemSnowM = Transformacoes::transladar(-12.5, 0, -15);
     Matriz rotY30 = Transformacoes::rotacaoY(-30);
     Matriz translacaoSnowman = Transformacoes::transladar(15.0, 0, 37.0);
-    SnowMan snowman(1);
+    SnowMan snowman("SnowMan");
     snowman.aplicaTransformacao(translacaoOrigemSnowM);
     snowman.aplicaTransformacao(rotY30);
     snowman.aplicaTransformacao(translacaoSnowman);
     snowman.adicionaCena(cena);
 
 
-    Poste poste(6);
+    Poste poste("Poste 1");
     Matriz transladaPoste = Transformacoes::transladar(24, 0, 15);
     poste.aplicaTransformacao(transladaPoste);
     poste.adicionaCena(cena);
 
 
-    Poste poste2(7);
+    Poste poste2("Poste 2");
     Matriz transladaOrigem = Transformacoes::transladar(-18, 0, -17);
     Matriz transladaPoste2 = Transformacoes::transladar(15, 0, 32);
     Matriz rotY180 = Transformacoes::rotacaoY(180);
@@ -123,7 +123,7 @@ int main(int argc, char **argv){
 
 
 
-    Poste poste3(8);
+    Poste poste3("Poste 3");
     Matriz transladaPoste3 = Transformacoes::transladar(24, 0, -3);
     poste3.aplicaTransformacao(transladaPoste3);
     poste3.adicionaCena(cena);
@@ -131,7 +131,7 @@ int main(int argc, char **argv){
 
 
 
-    Poste poste4(9);
+    Poste poste4("Poste 4");
     Matriz transladaPoste4 = Transformacoes::transladar(15, 0, 14);
     poste4.aplicaTransformacao(transladaOrigem);
     poste4.aplicaTransformacao(rotY180);
@@ -141,7 +141,7 @@ int main(int argc, char **argv){
 
 
 
-    Arvore arvore(2);
+    Arvore arvore("Arvore 3");
     Matriz transladaOrigemArv = Transformacoes::transladar(-14.0, 0, -23.0);
     Matriz escalaArv1 = Transformacoes::escalar(1.5, 1.5, 1.5);
     Matriz transladaArv = Transformacoes::transladar(19.0, 0.0, 43.0);
@@ -150,20 +150,20 @@ int main(int argc, char **argv){
     arvore.aplicaTransformacao(transladaArv);
     arvore.adicionaCena(cena);
 
-    Arvore arvore2(3);
+    Arvore arvore2("Arvore 4");
     Matriz transladaArv2 = Transformacoes::transladar(24, 0, 20);
     arvore2.aplicaTransformacao(transladaArv2);
     arvore2.adicionaCena(cena);
 
 
-    Arvore arvore3(4);
+    Arvore arvore3("Arvore 5");
     Matriz transladaArv3 = Transformacoes::transladar(38, 0, 15);
     arvore3.aplicaTransformacao(transladaArv3);
     arvore3.adicionaCena(cena);
 
 
 
-    Arvore arvore4(5);
+    Arvore arvore4("Arvore 2");
     Matriz escalaArv2 = Transformacoes::escalar(0.7, 0.7, 0.7);
     Matriz transladaArv4 = Transformacoes::transladar(7, 0, 33);
     arvore4.aplicaTransformacao(transladaOrigemArv);
@@ -171,15 +171,15 @@ int main(int argc, char **argv){
     arvore4.aplicaTransformacao(transladaArv4);
     arvore4.adicionaCena(cena);
 
-    Arvore arvore5(12);
+    Arvore arvore5("Arvore 1");
     Matriz transladaArv5= Transformacoes::transladar(-7, 0, -10.0);
     arvore5.aplicaTransformacao(transladaArv5);
     arvore5.adicionaCena(cena);
 
-    Banco banco1(10);
+    Banco banco1("Banco 1");
     banco1.adicionaCena(cena);
 
-    Banco banco2(11);
+    Banco banco2("Banco 2");
     Matriz transladaOrigemBanco = Transformacoes::transladar(-14.1, -1.9, -23.05);
     Matriz transladaBanco2= Transformacoes::transladar(45.0, 1.9, 23.05);
     banco2.aplicaTransformacao(transladaOrigemBanco);

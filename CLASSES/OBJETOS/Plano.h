@@ -19,8 +19,8 @@ struct Plano : Objeto{
     Vt vd;
     
 
-    Plano(Ponto P0, Vect N){
-        this->id= -1;
+    Plano(string nome, Ponto P0, Vect N){
+        this->nome= nome;
         this->P0 = P0;
         this->N = N;
         this->kdif= RGB(0.0, 0.0, 0.0);

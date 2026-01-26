@@ -12,7 +12,7 @@
 
 struct Objeto{
     RGB kdif, kesp, kamb;
-    int id;
+    string nome;
     int m;
     double t;
     bool usaText;
@@ -44,6 +44,9 @@ struct Objeto{
         return luz.ilumina(P, N, pI, O, kdif, kesp, m);
     }
 
+    string getNome(){
+        return nome;
+    }
 
 };
 
@@ -67,7 +70,8 @@ inline bool shadowRay(Ponto &pI, const Luz &L, Objeto *atual, vector<Objeto *> &
         }
     }
     return false;
-} 
+
+}
 
 
 

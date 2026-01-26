@@ -18,7 +18,7 @@ typedef struct Canvas{
     Camera *cam;
     RGB iA;
     vector<RGB> janela;
-    vector<int> pickBuffer;
+    vector<string> pickBuffer;
     vector<Objeto*> cena;
     vector<Luz*> luzes;
 
@@ -27,7 +27,7 @@ typedef struct Canvas{
         this->h = h;
         this->janela = vector<RGB> (w*h, RGB(0.0, 0.0, 0.0));
         this->cam = cam;
-        this->pickBuffer = vector<int>(w*h, -1);
+        this->pickBuffer = vector<string>(w*h);
         this->iA = iA;
     }
 
@@ -45,15 +45,15 @@ typedef struct Canvas{
             for(int c = 0; c<w; c++){
                 Objeto* hit = nullptr;
 
-                double x = cam->xmin + (cam->xmax - cam->xmin) * (c + 0.5) / w;
-                double y = cam->ymax - (cam->ymax - cam->ymin) * (g + 0.5) / h;
+                float x = cam->xmin + (cam->xmax - cam->xmin) * (c + 0.5) / w;
+                float y = cam->ymax - (cam->ymax - cam->ymin) * (g + 0.5) / h;
 
                 Ponto P = cam->posicao +
                         cam->U * x +
                         cam->V * y -
                         cam->W * cam->d;
 
-                double tmin = -1.0;
+                float tmin = -1.0;
 
                 RGB corFinal(0,0,0);
 
@@ -88,7 +88,7 @@ typedef struct Canvas{
                 }
 
                 if(hit){
-                    pickBuffer[g*w + c] = hit->id;
+                    pickBuffer[g*w + c] = hit->nome;
                 }
 
                 corFinal.clamp();
@@ -100,13 +100,13 @@ typedef struct Canvas{
         ofstream out(filename);
         out << "P3\n" << w << " " << h << "\n255\n";
         for (int i = 0; i < w*h; i++) {
-            double r = janela[i].r;
-            double g = janela[i].g;
-            double b = janela[i].b;
+            float r = janela[i].r;
+            float g = janela[i].g;
+            float b = janela[i].b;
 
-            r = min(1.0, max(0.0, r));
-            g = min(1.0, max(0.0, g));
-            b = min(1.0, max(0.0, b));
+            r = min(float(1), max(float(0), r));
+            g = min(float(1), max(float(0), g));
+            b = min(float(1), max(float(0), b));
 
             int R = int(r * 255.0);
             int G = int(g * 255.0);
@@ -118,7 +118,7 @@ typedef struct Canvas{
     }
 
 
-    int pick(int mouseX, int mouseY){
+    string pick(int mouseX, int mouseY){
         return pickBuffer[mouseY*w + mouseX];
     }
     

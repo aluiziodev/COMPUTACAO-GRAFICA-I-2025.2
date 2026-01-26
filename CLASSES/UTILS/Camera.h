@@ -10,13 +10,13 @@ typedef struct Camera{
     Vt U; //direita
     Vt V; //cima
     Vt W; //frente
-    double d;
-    double xmin;
-    double xmax;
-    double ymin;
-    double ymax;
+    float d;
+    float xmin;
+    float xmax;
+    float ymin;
+    float ymax;
 
-    Camera(double wJan, double hjan, Ponto posicao = Ponto(0,0,0), 
+    Camera(float wJan, float hjan, Ponto posicao = Ponto(0,0,0), 
             Vt U = Vt(1,0,0), Vt V = Vt(0,1,0), Vt W = Vt(0,0,-1),
             double fovY = 60, double d = 0.3){
         this->posicao = posicao;
@@ -24,27 +24,27 @@ typedef struct Camera{
         this->U = U;
         this->V = V;
         this->W = W;
-        double h = d * tan(fovY * M_PI /360);
-        double aspc = wJan/hjan;
+        float h = d * tan(fovY * M_PI /360);
+        float aspc = wJan/hjan;
         this->xmin = - h * aspc;
         this->xmax = h * aspc;
         this->ymin = -h;
         this->ymax = h;
     }
     
-    void zoomIn(double z){
-        d = min( 15.0 ,  d*z);
+    void zoomIn(float z){
+        d =  d*z;
     }
 
-    void zoomOut(double z){
-        d = max(0.01, d/z);
+    void zoomOut(float z){
+        d =  d/z;
     }
 
 
-    void girarDireitaEsquerda(double angulo){
-        double rad = angulo * M_PI / 180.0;
-        double c = cos(rad);
-        double s = sin(rad);
+    void girarDireitaEsquerda(float angulo){
+        float rad = angulo * M_PI / 180.0;
+        float c = cos(rad);
+        float s = sin(rad);
 
         Vt U = this->U;
         Vt W = this->W;
@@ -57,10 +57,10 @@ typedef struct Camera{
         this->W.normaliza();
     }
 
-    void girarCimaBaixo(double angulo){
-        double rad = angulo * M_PI /180.0;
-        double c = cos(rad);
-        double s = sin(rad);
+    void girarCimaBaixo(float angulo){
+        float rad = angulo * M_PI /180.0;
+        float c = cos(rad);
+        float s = sin(rad);
 
         Vt V = this->V;
         Vt W = this->W;
@@ -73,10 +73,10 @@ typedef struct Camera{
         this->W.normaliza();
     }
 
-    void girarRolamento( double angulo){
-        double rad = angulo * M_PI /180.0;
-        double c = cos(rad);
-        double s = sin(rad);
+    void girarRolamento( float angulo){
+        float rad = angulo * M_PI /180.0;
+        float c = cos(rad);
+        float s = sin(rad);
 
         Vt U = this->U;
         Vt V = this->V;

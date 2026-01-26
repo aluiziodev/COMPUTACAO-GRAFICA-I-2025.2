@@ -20,8 +20,8 @@ struct Cone : Objeto{
     Ponto Cbase;
     Vt dCone;
     bool temBase;
-    Cone(int id, double raio, double alt, Ponto centro, Vect d){
-        this->id = id;
+    Cone(string nome, double raio, double alt, Ponto centro, Vect d){
+        this->nome = nome;
         r = raio;
         Cbase = centro;
         hCone = alt;
@@ -49,7 +49,7 @@ struct Cone : Objeto{
         double tBase = 1e9;
         bool hitBase = false;
         if(temBase){
-            Plano p = Plano(Cbase, dCone);
+            Plano p = Plano(nome, Cbase, dCone);
             if(p.intersecta(O, P)){
                 Ponto pI = O.pontoIntersecao(p.t, D);
                 Vt v = pI - Cbase;

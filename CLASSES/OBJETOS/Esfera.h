@@ -16,8 +16,8 @@ struct Esfera : Objeto{
     double r;
     Ponto Cesf;
 
-    Esfera(int id, double raio, Ponto centro){
-        this->id = id;
+    Esfera(string nome, double raio, Ponto centro){
+        this->nome = nome;
         r = raio;
         Cesf = centro;
         kdif = {0, 0, 0};

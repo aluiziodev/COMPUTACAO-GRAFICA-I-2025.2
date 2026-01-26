@@ -42,14 +42,14 @@ int main(int argc, char **argv){
 
 
     int texW, texH, Canais;
-    unsigned char* textura_grama = stbi_load("../TEXTURAS/paisagemNeve3.jpg", &texW, &texH, &Canais, 0);
+    unsigned char* textura_grama = stbi_load("../../TEXTURAS/paisagemNeve3.jpg", &texW, &texH, &Canais, 0);
     if (!textura_grama) {
         cerr << "Erro ao carregar textura!\n";
         return -1;
     }
 
     int texW2, texH2, Canais2;
-    unsigned char* textura_grama2 = stbi_load("../TEXTURAS/neve.jpg", &texW2, &texH2, &Canais2, 0);
+    unsigned char* textura_grama2 = stbi_load("../../TEXTURAS/neve.jpg", &texW2, &texH2, &Canais2, 0);
     if (!textura_grama2) {
         cerr << "Erro ao carregar textura!\n";
         return -1;
@@ -57,7 +57,7 @@ int main(int argc, char **argv){
     
 
     int texW3, texH3, Canais3;
-    unsigned char* textura_grama3 = stbi_load("../TEXTURAS/paisagemNeve3.jpg", &texW3, &texH3, &Canais3, 0);
+    unsigned char* textura_grama3 = stbi_load("../../TEXTURAS/paisagemNeve3.jpg", &texW3, &texH3, &Canais3, 0);
     if (!textura_grama3) {
         cerr << "Erro ao carregar textura!\n";
         return -1;
@@ -67,19 +67,51 @@ int main(int argc, char **argv){
     int nLin = 500;
     int nCol = 500;
 
-    Camera Cam(500, 500, Pt(50.0, 20.0, 0.0));
 
-    Cam.LookAt(Pt(19.0, 0, 43.0));
+    //-----------VISTA PERSPECTIVA--------------
 
-    Cam.zoomIn(2);
+    Camera Cam(500, 500, Pt(28.0, 15.0, 0.0));
+    Cam.LookAt(Pt(26.0, 0, 20.0));
+    Cam.zoomOut(1.9);
+   
+    //--------------VISTA OBLIQUA POR PADRAO É CABINET--------------
 
-    
+    // Camera Cam(500, 500, Pt(38.0, 23.0, 0.0));
+    // Cam.obliqua = true;
+    // Cam.zoomOrtho(130);
 
+
+    // --------------VISTA OBLIQUA CAVALIER--------------
+
+    // Camera Cam(500, 500, Pt(38.0, 23.0, 0.0));
+    // Cam.obliqua = true;
+    // Cam.zoomOrtho(130);
+    // Cam.L = 1; //Cavalier
+
+
+    //-------------- VISTA ORTOGRAFICA FRONTAL--------------
+
+    // Camera Cam(500, 500, Pt(27.0, 13.0, 0.0));
+    // Cam.ortografica = true;
+    // Cam.zoomOrtho(130);
+
+
+    //--------------VISTA ORTOGRAFICA LATERAL--------------
+
+    // Camera Cam(500, 500, Pt(60.0, 22.0, 20.0));
+    // Cam.LookAt(Pt(19.0, 22.0, 20.0));
+    // Cam.ortografica = true;
+    // Cam.zoomOrtho(130);
+
+    //--------------VISTA ORTOGRAFICA SUPERIOR--------------
+
+    // Camera Cam(500, 500, Pt(27.0, 80.0, 20.0));
+    // Cam.LookAt(Pt(27.0, 0.0, 20.0));
+    // Cam.ortografica = true;
+    // Cam.zoomOrtho(130);
 
     vector<Objeto *> cena;
     vector<Luz *> luzes;
-
-
 
     // PLANO CHAO
 
@@ -197,7 +229,7 @@ int main(int argc, char **argv){
 
     Banco banco2("Banco 2");
     Matriz transladaOrigemBanco = Transformacoes::transladar(-14.1, -1.9, -23.05);
-    Matriz transladaBanco2= Transformacoes::transladar(45.0, 1.9, 23.05);
+    Matriz transladaBanco2= Transformacoes::transladar(42.0, 1.9, 23.05);
     banco2.aplicaTransformacao(transladaOrigemBanco);
     banco2.aplicaTransformacao(rotY180);
     banco2.aplicaTransformacao(transladaBanco2);
@@ -246,7 +278,14 @@ int main(int argc, char **argv){
         canvas.adicionarLuz(luz);
     }
 
-    canvas.GeraImg("prototipo.ppm");
+    if(Cam.ortografica)
+        canvas.GeraImgOrto("ORTOGRAFICA.ppm");
+    else if(Cam.obliqua)
+        canvas.GeraImgObl("OBLIQUAcavalier.ppm");
+    else
+        canvas.GeraImg("PERSPECTIVA.ppm");
+
+
     cout << "imagem renderizada com sucesso \n";
 
     Interface::inicializa(argc, argv, nCol, nLin, &canvas, "Trabalho Final - Computacao Grafica 1");

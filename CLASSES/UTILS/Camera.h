@@ -16,11 +16,17 @@ typedef struct Camera{
     float ymin;
     float ymax;
 
+    bool ortografica = false;
+
+    bool obliqua = false;
+    float theta = 45 * M_PI / 180.0;
+    float L = 0.5; // cabinet
+
     Camera(float wJan, float hjan, Ponto posicao = Ponto(0,0,0), 
             Vt U = Vt(1,0,0), Vt V = Vt(0,1,0), Vt W = Vt(0,0,-1),
             double fovY = 60, double d = 0.3){
         this->posicao = posicao;
-        this->d = d; //Vamos deixar essa distancia por padrão 
+        this->d = d; 
         this->U = U;
         this->V = V;
         this->W = W;
@@ -31,7 +37,13 @@ typedef struct Camera{
         this->ymin = -h;
         this->ymax = h;
     }
-    
+
+    void zoomOrtho(float z){
+        xmin *= z;
+        xmax *= z;
+        ymin *= z;
+        ymax *= z;
+    }
     void zoomIn(float z){
         d =  d*z;
     }
@@ -40,7 +52,7 @@ typedef struct Camera{
         d =  d/z;
     }
 
-
+    // yaw
     void girarDireitaEsquerda(float angulo){
         float rad = angulo * M_PI / 180.0;
         float c = cos(rad);
@@ -56,7 +68,7 @@ typedef struct Camera{
         this->V.normaliza();
         this->W.normaliza();
     }
-
+    // pitch
     void girarCimaBaixo(float angulo){
         float rad = angulo * M_PI /180.0;
         float c = cos(rad);
@@ -72,7 +84,7 @@ typedef struct Camera{
         this->V.normaliza();
         this->W.normaliza();
     }
-
+    // roll
     void girarRolamento( float angulo){
         float rad = angulo * M_PI /180.0;
         float c = cos(rad);

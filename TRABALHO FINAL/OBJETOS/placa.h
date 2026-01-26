@@ -65,7 +65,7 @@ struct Placa : ObjetoMulti{
 
 
        double aresta = 3.5;
-       double h2 = 0.1;
+       double h2 = 0.3;
        Ponto cbase2 = Pt(35.4 , 0.05 , -12.45);
        Ponto v5(cbase2.x - h2, cbase2.y, cbase2.z - h2);
        Ponto v6(cbase2.x + h2, cbase2.y, cbase2.z - h2);
@@ -95,7 +95,7 @@ struct Placa : ObjetoMulti{
        vector<Triangulo> faces2 = { f3, f4, f5, f6, f7, f8, f9, f10, f11, f12, f13, f14};
 
 
-       //PES DO BANCO
+       //PES DA PLACA
        Malha *placaA = new Malha(nome, vertices2, faces2);
        placaA->kdif = RGB(0.545, 0.271, 0.075);
        placaA->kesp = RGB(0.545, 0.271, 0.075);

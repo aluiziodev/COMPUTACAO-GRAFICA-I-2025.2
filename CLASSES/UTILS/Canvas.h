@@ -118,6 +118,171 @@ typedef struct Canvas{
     }
 
 
+    void GeraImgOrto(const string& filename) {
+
+        for(int g = 0; g<h; g++){
+            for(int c = 0; c<w; c++){
+                Objeto* hit = nullptr;
+                
+                float x = cam->xmin + (cam->xmax - cam->xmin) * (c + 0.5) / w;
+                float y = cam->ymax - (cam->ymax - cam->ymin) * (g + 0.5) / h;
+
+                Ponto P;
+                Vt D;
+
+               
+                P = cam->posicao + cam->U * x + cam->V * y;
+                D = cam->W * -1;  
+                
+                     
+
+                D.normaliza();
+
+                float tmin = -1.0;
+
+                RGB corFinal(0,0,0);
+
+                for(Objeto *obj : cena){
+                    Ponto P2 = P + D;
+                    if(obj->intersecta(P, P2)){
+                        if(obj->t>0 && (tmin<0 || obj->t<tmin)){
+                            tmin = obj->t;
+                            hit = obj;
+                            
+                            Ponto pI= P.pontoIntersecao(obj->t, D);
+
+                            RGB cor(0,0,0);
+
+                            cor = obj->kamb.arroba(iA);
+                            for(const Luz* L : luzes){
+                                if(shadowRay(pI, *L, obj, cena)){
+                                    continue;
+                                }
+                                else if(obj->usaText){
+                                    cor += obj->pintaTextura(*L, cam->posicao, P);
+                                }
+                                else{
+                                    cor += obj->pinta(*L, cam->posicao, P);
+                                }
+                            }
+                            corFinal = cor;
+                            
+                        }
+                    }
+                }
+
+                if(hit){
+                    pickBuffer[g*w + c] = hit->nome;
+                }
+
+                corFinal.clamp();
+                janela[g*w+c] = corFinal;
+                    
+            }
+
+        }
+        ofstream out(filename);
+        out << "P3\n" << w << " " << h << "\n255\n";
+        for (int i = 0; i < w*h; i++) {
+            float r = janela[i].r;
+            float g = janela[i].g;
+            float b = janela[i].b;
+
+            r = min(float(1), max(float(0), r));
+            g = min(float(1), max(float(0), g));
+            b = min(float(1), max(float(0), b));
+
+            int R = int(r * 255.0);
+            int G = int(g * 255.0);
+            int B = int(b * 255.0);
+
+            out << R << " " << G << " " << B << "\n";
+        }
+        out.close();
+    }
+
+
+    void GeraImgObl(const string& filename) {
+
+        for(int g = 0; g<h; g++){
+            for(int c = 0; c<w; c++){
+                Objeto* hit = nullptr;
+
+                float x = cam->xmin + (cam->xmax - cam->xmin) * (c + 0.5) / w;
+                float y = cam->ymax - (cam->ymax - cam->ymin) * (g + 0.5) / h;
+
+                Ponto P = cam->posicao + cam->U * x + cam->V * y;
+                Vt D = cam->W 
+                        + cam->U * cos(cam->theta) * cam->L
+                        + cam->V * sin(cam->theta) * cam->L;
+
+                D = D * -1;
+                D.normaliza();
+
+                float tmin = -1.0;
+
+                RGB corFinal(0,0,0);
+
+                for(Objeto *obj : cena){
+                    Ponto P2 = P + D;
+                    if(obj->intersecta(P, P2)){
+                        if(obj->t>0 && (tmin<0 || obj->t<tmin)){
+                            tmin = obj->t;
+                            hit = obj;
+
+                            Ponto pI= P.pontoIntersecao(obj->t, D);
+
+                            RGB cor(0,0,0);
+
+                            cor = obj->kamb.arroba(iA);
+                            for(const Luz* L : luzes){
+                                if(shadowRay(pI, *L, obj, cena)){
+                                    continue;
+                                }
+                                else if(obj->usaText){
+                                    cor += obj->pintaTextura(*L, cam->posicao, P);
+                                }
+                                else{
+                                    cor += obj->pinta(*L, cam->posicao, P);
+                                }
+                            }
+                            corFinal = cor;
+                            
+                        }
+                    }
+                }
+
+                if(hit){
+                    pickBuffer[g*w + c] = hit->nome;
+                }
+
+                corFinal.clamp();
+                janela[g*w+c] = corFinal;
+                    
+            }
+
+        }
+        ofstream out(filename);
+        out << "P3\n" << w << " " << h << "\n255\n";
+        for (int i = 0; i < w*h; i++) {
+            float r = janela[i].r;
+            float g = janela[i].g;
+            float b = janela[i].b;
+
+            r = min(float(1), max(float(0), r));
+            g = min(float(1), max(float(0), g));
+            b = min(float(1), max(float(0), b));
+
+            int R = int(r * 255.0);
+            int G = int(g * 255.0);
+            int B = int(b * 255.0);
+
+            out << R << " " << G << " " << B << "\n";
+        }
+        out.close();
+    }
+
+
     string pick(int mouseX, int mouseY){
         return pickBuffer[mouseY*w + mouseX];
     }

@@ -40,9 +40,25 @@ using namespace std;
 
 int main(int argc, char **argv){
 
-    int texW2, texH2, Canais2;
-    unsigned char* textura_grama = stbi_load("../TEXTURAS/neve.jpg", &texW2, &texH2, &Canais2, 0);
+
+    int texW, texH, Canais;
+    unsigned char* textura_grama = stbi_load("../TEXTURAS/paisagemNeve3.jpg", &texW, &texH, &Canais, 0);
     if (!textura_grama) {
+        cerr << "Erro ao carregar textura!\n";
+        return -1;
+    }
+
+    int texW2, texH2, Canais2;
+    unsigned char* textura_grama2 = stbi_load("../TEXTURAS/neve.jpg", &texW2, &texH2, &Canais2, 0);
+    if (!textura_grama2) {
+        cerr << "Erro ao carregar textura!\n";
+        return -1;
+    }
+    
+
+    int texW3, texH3, Canais3;
+    unsigned char* textura_grama3 = stbi_load("../TEXTURAS/paisagemNeve3.jpg", &texW3, &texH3, &Canais3, 0);
+    if (!textura_grama3) {
         cerr << "Erro ao carregar textura!\n";
         return -1;
     }
@@ -55,7 +71,7 @@ int main(int argc, char **argv){
 
     Cam.LookAt(Pt(19.0, 0, 43.0));
 
-    Cam.zoomOut(1.3);
+    Cam.zoomIn(2);
 
     
 
@@ -68,7 +84,7 @@ int main(int argc, char **argv){
     // PLANO CHAO
 
     Plano pChao("Chao", Pt(0, 0, 0), Vt(0, 1, 0));
-    pChao.colocaText(textura_grama, texW2, texH2, Canais2);
+    pChao.colocaText(textura_grama2, texW2, texH2, Canais2);
     pChao.ud = Vt(1.0, 0.0, 0.0); 
     pChao.vd = Vt(0.0, 0.0, 1.0); 
     pChao.m = 1;
@@ -77,9 +93,9 @@ int main(int argc, char **argv){
     //PLANO 2 (PAREDE LATERAL)
 
     Plano pLat("Vista", Pt(0.0, 1.0, 1.0), Vt(1.0, 0.0, 0.0));
-    pLat.kdif = RGB(0.329, 0.608, 0.922);
-    pLat.kesp = RGB(0.329, 0.608, 0.922);
-    pLat.kamb = RGB(0.329, 0.608, 0.922);
+    pLat.colocaText(textura_grama, texW, texH, Canais);
+    pLat.ud = Vt(0.0, 1.0, 0.0); 
+    pLat.vd = Vt(0.0, 0.0, 1.0); 
     pLat.m = 1;
     cena.push_back(&pLat);
 
@@ -88,9 +104,9 @@ int main(int argc, char **argv){
     //PLANO 3 (PAREDE FRONTAL)
 
     Plano pFront("Vista", Pt(1.0, 1.0, 60.0), Vt(0.0, 0.0, -1.0));
-    pFront.kdif = RGB(0.329, 0.608, 0.922);
-    pFront.kesp = RGB(0.329, 0.608, 0.922);
-    pFront.kamb = RGB(0.329, 0.608, 0.922);
+    pFront.colocaText(textura_grama3, texW3, texH3, Canais3);
+    pFront.ud = Vt(1.0, 0.0, 0.0); 
+    pFront.vd = Vt(0.0, 1.0, 0.0);
     pFront.m = 1;
     cena.push_back(&pFront);
 
@@ -187,10 +203,12 @@ int main(int argc, char **argv){
     banco2.aplicaTransformacao(transladaBanco2);
     banco2.adicionaCena(cena);
 
-    Placa placa(13);
+    Placa placa("Placa 1");
     placa.adicionaCena(cena);
+    Matriz espelho = Transformacoes::EspelharXY();
     Matriz cis  = Transformacoes::cisalharXY(0.3, 0.0);
     placa.aplicaTransformacao(cis);
+    placa.aplicaTransformacao(espelho);
 
     RGB iF(0.25,0.25,0.25);
     //RGB iFd(0.5, 0.5, 0.7);

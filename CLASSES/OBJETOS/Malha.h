@@ -16,8 +16,8 @@ struct Malha : Objeto{
     vector<Triangulo> faces;
     Vt N;
 
-    Malha(int id, vector<Ponto> v, vector<Triangulo> f){
-        this->id = id;
+    Malha(string nome, vector<Ponto> v, vector<Triangulo> f){
+        this->nome = nome;
         vertices = v;
         faces = f;
         kdif = {0, 0, 0};

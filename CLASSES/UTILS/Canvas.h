@@ -18,7 +18,7 @@ typedef struct Canvas{
     Camera *cam;
     RGB iA;
     vector<RGB> janela;
-    vector<int> pickBuffer;
+    vector<string> pickBuffer;
     vector<Objeto*> cena;
     vector<Luz*> luzes;
 
@@ -27,7 +27,7 @@ typedef struct Canvas{
         this->h = h;
         this->janela = vector<RGB> (w*h, RGB(0.0, 0.0, 0.0));
         this->cam = cam;
-        this->pickBuffer = vector<int>(w*h, -1);
+        this->pickBuffer = vector<string>(w*h);
         this->iA = iA;
     }
 
@@ -88,7 +88,7 @@ typedef struct Canvas{
                 }
 
                 if(hit){
-                    pickBuffer[g*w + c] = hit->id;
+                    pickBuffer[g*w + c] = hit->nome;
                 }
 
                 corFinal.clamp();
@@ -118,7 +118,7 @@ typedef struct Canvas{
     }
 
 
-    int pick(int mouseX, int mouseY){
+    string pick(int mouseX, int mouseY){
         return pickBuffer[mouseY*w + mouseX];
     }
     

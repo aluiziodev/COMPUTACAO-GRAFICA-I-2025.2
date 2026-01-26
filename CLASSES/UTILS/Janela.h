@@ -13,10 +13,10 @@ typedef struct RGB {
     float r, g, b;
 
     
-    RGB(float r=0, float g=0, float b=0){
-        this->r = r;
-        this->g = g;
-        this->b = b;
+    RGB(double r=0, double g=0, double b=0){
+        this->r = float(r);
+        this->g = float(g);
+        this->b = float(b);
     }
 
     RGB operator+=(const RGB &c){

@@ -11,7 +11,7 @@
 #include "Vetores.h"
 
 struct ObjetoMulti {
-    int id;
+    string nome;
     vector<Objeto *> componentes;
 
     virtual ~ObjetoMulti() {}

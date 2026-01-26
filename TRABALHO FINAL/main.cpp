@@ -76,19 +76,20 @@ int main(int argc, char **argv){
 
 
     // 1 ponto de fuga
-    Camera Cam(500, 500, Pt(28.0, 5.0, 0.0));
-    Cam.zoomOut(1.9);
+    //Camera Cam(500, 500, Pt(55.0, 10.0, 55.0));
+    //Cam.LookAt(Pt(0,15.0,0), Vt(0,1, 0));
+    //Cam.zoomOut(1.9);
 
     // 2 ponto de fuga
     //Camera Cam(500, 500, Pt(38.0, 5.0, 0.0));
     //Cam.girarDireitaEsquerda(-20);
     //Cam.zoomOut(1.9);
 
-    // 3 ponto de fuga
-    //Camera Cam(500, 500, Pt(38.0, 20.0, 0.0));
-    //Cam.girarDireitaEsquerda(-20);
-    //Cam.girarCimaBaixo(25);
-    //Cam.zoomOut(1.9);
+    //3 ponto de fuga
+    Camera Cam(500, 500, Pt(38.0, 20.0, 0.0));
+    Cam.LookAt(Pt(10, 0, 30));
+    Cam.zoomOut(1.2);
+    Cam.girarRolamento(80);
 
    
     //--------------VISTA OBLIQUA POR PADRAO É CABINET--------------
@@ -216,7 +217,7 @@ int main(int argc, char **argv){
     arvore.adicionaCena(cena);
 
     Arvore arvore2("Arvore 4");
-    Matriz transladaArv2 = Transformacoes::transladar(24, 0, 20);
+    Matriz transladaArv2 = Transformacoes::transladar(24, 0, 25);
     arvore2.aplicaTransformacao(transladaArv2);
     arvore2.adicionaCena(cena);
 
@@ -283,7 +284,7 @@ int main(int argc, char **argv){
     LuzDirecional luzDir(iFd, Vt(-0.67, -0.67, 1.0));
     luzes.push_back(&luzDir);
 
-    LuzPontual LuzPont(iFp, Pt(70.0, 80.0, 0.1));
+    LuzPontual LuzPont(iFp, Pt(50.0, 50.0, 0.1));
     luzes.push_back(&LuzPont);
 
     Canvas canvas(nCol, nLin, &Cam, iA);
